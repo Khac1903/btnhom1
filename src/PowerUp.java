@@ -1,3 +1,4 @@
+
 import java.awt.*;
 
 public class PowerUp extends MoveObject {
@@ -14,5 +15,4 @@ public class PowerUp extends MoveObject {
         Rectangle powerupRect = this.getBound();
         Rectangle paddleRect = paddle.getBound();
     }
-
 }

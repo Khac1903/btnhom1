@@ -68,6 +68,7 @@ public class BrickMap {
                         ball.reverseY();
                     }
                     if (brick.getType() == BrickType.EXPLORE) {
+
                         brick.setVisible(false);
                         brokenBricks++;
                         totalBricks--;
@@ -78,6 +79,7 @@ public class BrickMap {
                     } else {
                         SoundManager.playSound("src/sounds/ball_hit_brick.wav");
                         if (brick.hit()) {
+
                             brokenBricks++;
                             totalBricks--;
                         }

@@ -51,6 +51,7 @@ public class Ball extends MoveObject {
     public void reverseX() {
         dx = -dx;
     }
+
     public boolean isOutOfBounds(int panelHeight) {
         return y >= panelHeight;
     }

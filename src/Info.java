@@ -5,10 +5,12 @@ public class Info {
     protected int level;
     protected int lives;
 
+
     public Info() {
         this.level = 3;
         this.score = 0;
         this.lives = 3;
+
     }
 
     public void draw(Graphics g){

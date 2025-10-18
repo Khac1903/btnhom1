@@ -27,10 +27,12 @@ public class GamePanel extends JPanel implements ActionListener {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         gameRenderer.render(g, gameManager, PANEL_WIDTH, PANEL_HEIGHT);
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
         gameManager.update(getWidth(), getHeight());
         repaint();
     }
@@ -56,9 +58,11 @@ public class GamePanel extends JPanel implements ActionListener {
 
         @Override
         public void keyReleased(KeyEvent e) {
+
             GameState state = gameManager.getGameState();
             if (state.isRunning() || state.isReady())
                 gameManager.getPaddle().keyReleased(e);
+
         }
     }
 }
