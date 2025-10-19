@@ -35,8 +35,14 @@ public class Bricks {
     }
 
     public void draw(Graphics g) {
-        if (isVisible) {
-            g.setColor(color);
+        if(!isVisible) return;;
+
+        Image img = type.getImage();
+        if(img != null) {
+            g.drawImage(img, x, y, width, height, null);
+        } else {
+            // trong trường hợp không tìm được ảnh thì vẽ tạm
+            g.setColor(color );
             g.fillRect(x, y, width, height);
 
             if (type == BrickType.DURABLE && health == 1) {
