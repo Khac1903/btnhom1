@@ -1,29 +1,36 @@
 public class LinkedList {
     static class Node {
         public int data;
-        public Node next;
+        public Node left;
+        public Node right;
         public Node (int newdata) {
             this.data = newdata;
-            this.next = null;
+            this.left = null;
+            this.left = null;
         }
 
     }
-    static Node find(Node head, int pos) {
-        int count = 0;
-        Node temp = head;
-        while (temp != null) {
-            count++;
-            if (count == pos) {
-                break;
-            }
-            temp = temp.next;
+    static boolean find(Node head, int val) {
+        if (head == null) {
+            return false;
         }
-        return temp;
+
+        if (val > head.data) {
+            return find(head.right,val);
+        } else if (val < head.data) {
+            return find(head.left,val);
+        } else {
+            return true;
+        }
     }
     static Node inSert(Node head , int value) {
-        Node ranDom = new Node(value);
-        ranDom.next=head;
-        return ranDom;
+        if(head == null) {
+            return new Node(value);
+        } else if (value > head.data) {
+            head.right = inSert(head.right,value);
+        } else {
+            head.left = inSert(head.left,value)
+        }
     }
     static Node inSert2(Node head , int value) {
         Node ranDom = new Node(value);

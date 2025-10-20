@@ -7,8 +7,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 public enum BrickType {
     NORMAL("images/normal.png"),
-    INDESTRUCTIBLE("images/indestructible.png"),
-    DURABLE("images/durable.png"),
+    INDESTRUCTIBLE("images/indestructible.jpg"),
+    DURABLE("images/durable.jpg"),
     EXPLORE("images/explore.png");
 
     private Image image;
@@ -16,12 +16,13 @@ public enum BrickType {
     BrickType(String path) {
         try {
             image = ImageIO.read(new File(path));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Lỗi không tải được ảnh " + path);
             image = null;
         }
     }
+
     public Image getImage() {
         return image;
     }
+}
