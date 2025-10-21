@@ -19,7 +19,7 @@ public class Info {
 
         g.drawString("Level: " + level, 20, 30);
         g.drawString("Score: " + score, 20, 55);
-
+        g.drawString("Lives: " + lives, 20, 80);
     }
     public void increaseScore(){
         score += 10;
