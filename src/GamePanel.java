@@ -52,6 +52,25 @@ public class GamePanel extends JPanel implements ActionListener {
                 return; // không xử lý phím khác khi đang ở menu
             }
 
+            if (state.isPaused()) {
+                if (key == KeyEvent.VK_UP) gameManager.movePauseMenuUp();
+                else if (key == KeyEvent.VK_DOWN) gameManager.movePauseMenuDown();
+                else if (key == KeyEvent.VK_ENTER) gameManager.selectPauseMenuOption();
+                return;
+            }
+
+            
+            if (state.isGameOver()) {
+                if (key == KeyEvent.VK_UP)
+                    gameManager.moveGameOverMenuUp();
+                else if (key == KeyEvent.VK_DOWN)
+                    gameManager.moveGameOverMenuDown();
+                else if (key == KeyEvent.VK_ENTER)
+                    gameManager.selectGameOverOption();
+                return;
+            }
+
+
             if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_RIGHT) {
                 if (state.isReady() || state.isRunning())
                     gameManager.getPaddle().keyPressed(e);

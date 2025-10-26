@@ -13,6 +13,8 @@ public class GameManager implements ActionListener {
     private LevelManager levelManager;
     private PlayerManager playerManager;
     private int selectedMenuIndex = 0;
+    private int pauseMenuIndex = 0;
+    private int gameOverMenuIndex = 0;
 
     public GameManager() {
         gameState = new GameState();
@@ -124,6 +126,66 @@ public class GameManager implements ActionListener {
                 break;
         }
     }
+
+    public int getPauseMenuIndex() {
+        return pauseMenuIndex;
+    }
+
+    public void movePauseMenuUp() {
+        pauseMenuIndex--;
+        if (pauseMenuIndex < 0) pauseMenuIndex = 2;
+    }
+
+    public void movePauseMenuDown() {
+        pauseMenuIndex++;
+        if (pauseMenuIndex > 2) pauseMenuIndex = 0;
+    }
+
+    public void selectPauseMenuOption() {
+        switch (pauseMenuIndex) {
+            case 0: // Resume
+                gameState.setStatus(GameStatus.RUNNING);
+                break;
+
+            case 1: // Restart
+                reset();
+                break;
+
+            case 2: // Exit to Main Menu
+                reset();
+                gameState.setStatus(GameStatus.MENU);
+                break;
+        }
+    }
+
+    public int getGameOverMenuIndex() {
+        return gameOverMenuIndex;
+    }
+
+    public void moveGameOverMenuUp() {
+        gameOverMenuIndex--;
+        if (gameOverMenuIndex < 0) gameOverMenuIndex = 1;
+    }
+
+    public void moveGameOverMenuDown() {
+        gameOverMenuIndex++;
+        if (gameOverMenuIndex > 1) gameOverMenuIndex = 0;
+    }
+
+    public void selectGameOverOption() {
+        switch (gameOverMenuIndex) {
+
+            case 0: // Return to Main Menu
+                reset();
+                gameState.setStatus(GameStatus.MENU);
+                break;
+
+            case 1: // Exit Game
+                System.exit(0);
+                break;
+        }
+    }
+
 
     @Override
     public void actionPerformed(java.awt.event.ActionEvent e) {
