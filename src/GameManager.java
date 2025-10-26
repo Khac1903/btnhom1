@@ -12,12 +12,27 @@ public class GameManager implements ActionListener {
     private ScoreManager scoreManager;
     private LevelManager levelManager;
     private PlayerManager playerManager;
+    private int selectedMenuIndex = 0;
 
     public GameManager() {
+        gameState = new GameState();
+        gameState.setStatus(GameStatus.MENU); // 👈 bắt đầu ở menu
+
+        resetGameObjects();
         gameState = new GameState();
         scoreManager = new ScoreManager();
         levelManager = new LevelManager();
         playerManager = new PlayerManager();
+    }
+
+    private void resetGameObjects() {
+        ball = new Ball(390, 450, 20, 20, 4, Color.RED);
+        paddle = new Paddle(350, 550, 100, 15, Color.GREEN);
+        brickMap = new BrickMap(1);
+
+        scoreManager = new ScoreManager();
+        playerManager = new PlayerManager();
+        levelManager = new LevelManager();
     }
 
     public void startGame() {
@@ -78,6 +93,37 @@ public class GameManager implements ActionListener {
     public ScoreManager getScoreManager() { return scoreManager; }
     public LevelManager getLevelManager() { return levelManager; }
     public PlayerManager getPlayerManager() { return playerManager; }
+    public int getSelectedMenuIndex() {
+        return selectedMenuIndex;
+    }
+
+    public void moveMenuSelectionUp() {
+        selectedMenuIndex--;
+        if (selectedMenuIndex < 0) selectedMenuIndex = 2;
+    }
+
+    public void moveMenuSelectionDown() {
+        selectedMenuIndex++;
+        if (selectedMenuIndex > 2) selectedMenuIndex = 0;
+    }
+
+    public void selectMenuOption() {
+        switch (selectedMenuIndex) {
+            case 0: // Start Game
+                reset();
+                gameState.setStatus(GameStatus.READY);
+                break;
+            case 1: // How to Play
+                JOptionPane.showMessageDialog(null,
+                        "Cách chơi:\n- Dùng ← → để di chuyển thanh đỡ\n- ↑ để phóng bóng\n- P để tạm dừng",
+                        "Hướng dẫn",
+                        JOptionPane.INFORMATION_MESSAGE);
+                break;
+            case 2: // Exit
+                System.exit(0);
+                break;
+        }
+    }
 
     @Override
     public void actionPerformed(java.awt.event.ActionEvent e) {

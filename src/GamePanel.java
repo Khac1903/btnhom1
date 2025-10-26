@@ -41,6 +41,17 @@ public class GamePanel extends JPanel implements ActionListener {
             int key = e.getKeyCode();
             GameState state = gameManager.getGameState();
 
+            if(state.isMenu()) {
+                if (key == KeyEvent.VK_UP) {
+                    gameManager.moveMenuSelectionUp();
+                } else if (key == KeyEvent.VK_DOWN) {
+                    gameManager.moveMenuSelectionDown();
+                } else if (key == KeyEvent.VK_ENTER) {
+                    gameManager.selectMenuOption();
+                }
+                return; // không xử lý phím khác khi đang ở menu
+            }
+
             if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_RIGHT) {
                 if (state.isReady() || state.isRunning())
                     gameManager.getPaddle().keyPressed(e);

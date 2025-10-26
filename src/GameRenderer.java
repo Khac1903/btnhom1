@@ -9,7 +9,7 @@ public class GameRenderer {
 
         switch (state.getStatus()) {
             case MENU:
-                drawStartScreen(g, width, height);
+                drawMenuScreen(g, width, height, manager);
                 break;
             case READY:
             case RUNNING:
@@ -35,12 +35,31 @@ public class GameRenderer {
         manager.getBrickMap().draw(g);
     }
 
-    private void drawStartScreen(Graphics g, int width, int height) {
+    private void drawMenuScreen(Graphics g, int width, int height, GameManager manager) {
+        g.setColor(Color.BLACK);
+        g.fillRect(0,0, width, height);
+
         g.setColor(Color.WHITE);
-        g.setFont(MENU_FONT);
-        String msg = "Nhấn Enter để bắt đầu";
-        FontMetrics m = g.getFontMetrics(g.getFont());
-        g.drawString(msg, (width - m.stringWidth(msg)) / 2, height / 2);
+        g.setFont(new Font("Consolas", Font.BOLD, 48));
+        String title = "AKANOID";
+        g.drawString(title, (width - g.getFontMetrics().stringWidth(title))/2, height/4);
+
+        g.setFont(new Font("Arial", Font.BOLD, 28));
+        String[] options = {"Start Game", "How to Game", "Exit"};
+        int selected = manager.getSelectedMenuIndex();
+        for(int i=0; i<options.length; i++) {
+            if(i == selected) {
+                g.setColor(Color.YELLOW);
+            } else {
+                g.setColor(Color.LIGHT_GRAY);
+            }
+            g.drawString(options[i], (width - g.getFontMetrics().stringWidth(options[i]))/2, height/2 + i*50 );
+        }
+        g.setColor(Color.GRAY);
+        g.setFont(new Font("Arial", Font.PLAIN, 18));
+        g.drawString("Use ↑/↓ to move, ENTER to select, SPACE to paused",
+                (width - g.getFontMetrics().stringWidth("Use ↑/↓ to move, ENTER to select, SPACE to paused")) / 2,
+                height - 40);
     }
 
     private void drawPauseScreen(Graphics g, int width, int height) {
