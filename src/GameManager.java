@@ -30,6 +30,7 @@ public class GameManager implements ActionListener {
 
     public void update(int width, int height) {
         if (gameState.isReady() || gameState.isRunning()) {
+            if(gameState.isPaused()) return;
             paddle.move(width, height);
 
             if (gameState.isReady()) {

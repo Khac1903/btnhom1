@@ -15,6 +15,10 @@ public class GameRenderer {
             case RUNNING:
                 drawGame(g, manager);
                 break;
+            case PAUSED:
+                drawGame(g, manager);
+                drawPauseScreen(g, width, height);
+                break;
             case GAME_OVER:
                 drawGameOver(g, width, height);
                 break;
@@ -37,6 +41,15 @@ public class GameRenderer {
         String msg = "Nhấn Enter để bắt đầu";
         FontMetrics m = g.getFontMetrics(g.getFont());
         g.drawString(msg, (width - m.stringWidth(msg)) / 2, height / 2);
+    }
+
+    private void drawPauseScreen(Graphics g, int width, int height) {
+        g.setColor( Color.RED );
+        g.setFont(new Font("Arial", Font.BOLD, 60));
+        FontMetrics m = g.getFontMetrics();
+        String msg = "TẠM DỪNG";
+        g.drawString(msg, (width - m.stringWidth(msg)) / 2, height /2);
+
     }
 
     private void drawGameOver(Graphics g, int width, int height) {

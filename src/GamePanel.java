@@ -52,6 +52,17 @@ public class GamePanel extends JPanel implements ActionListener {
             if (key == KeyEvent.VK_ENTER && (state.isMenu() || state.isGameOver())) {
                 gameManager.reset();
             }
+            if (key == KeyEvent.VK_SPACE) {
+                if(state.isRunning())
+                {
+                    state.setStatus(GameStatus.PAUSED);
+                }
+                else {
+                    if(state.isPaused()) {
+                        state.setStatus(GameStatus.RUNNING);
+                    }
+                }
+            }
         }
 
         @Override
