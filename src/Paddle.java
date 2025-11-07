@@ -2,9 +2,18 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 
 public class Paddle extends MoveObject{
+    private Image paddleImage;
+
     public Paddle(int x, int y, int width, int height ,Color color){
-        super(x,color,0,0,height,width,y);
+        super(x, color, 0, 0, height, width, y);
+        this.paddleImage = null;
     }
+
+    public Paddle(int x, int y, int width, int height,Color color, Image paddleImage) {
+        super(x, color, 0, 0, height, width, y);
+        this.paddleImage = paddleImage;
+    }
+
     @Override
     public void move(int panelWidth, int panelHeight){
         x += dx;
@@ -29,4 +38,13 @@ public class Paddle extends MoveObject{
             dx = 0;
         }
     }
+    @Override
+    public void draw(Graphics g) {
+        if (paddleImage != null) {
+            g.drawImage(paddleImage, x, y, width, height, null);
+        } else {
+            super.draw(g); // vẽ hình chữ nhật nếu không có ảnh
+        }
+    }
+
 }

@@ -5,10 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5bec9d55-9017-45d9-b9cf-981164d850f9" name="Changes" comment="Khac commit">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/collisionManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/durable.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/explore.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/explore.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/indestructible.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/normal.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/normal.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Arkanoid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Arkanoid.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Ball.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Ball.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/BrickMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BrickMap.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/BrickType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BrickType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/LinkedList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/LinkedList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GamePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GameRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameRenderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/LinkedList.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Paddle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Paddle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Solution.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Student.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/StudentManagement.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Week4.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +55,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/Khac1903/btnhom1.git&quot;,
-    &quot;accountId&quot;: &quot;355c1cbb-b72c-4961-8f6a-3e09fc72b8e4&quot;
+    &quot;accountId&quot;: &quot;1da4efaa-74f9-4e92-ad8a-2caef21b3b8e&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -59,6 +75,7 @@
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/PC/IdeaProjects/10&quot;,
     &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/PC/IdeaProjects/10/src/Main.java&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;vcs.log&quot;
   }

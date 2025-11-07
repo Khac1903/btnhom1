@@ -18,6 +18,9 @@ public class GamePanel extends JPanel implements ActionListener {
     ScoreManager scoreManager;
     LevelManager levelManager;
     BufferedImage ballImage;
+    BufferedImage bgImage;
+    BufferedImage paddleImage;
+
 
 
 
@@ -41,11 +44,23 @@ public class GamePanel extends JPanel implements ActionListener {
             ballImage = null;
         }
 
+
+        try {
+            paddleImage = ImageIO.read(new File("images/paddle.png"));
+        } catch (IOException e) {
+            System.out.println("Không thể tải ảnh thanh đỡ!");
+            paddleImage = null;
+        }
+
+
+
+
+
         timer = new Timer(10, this);
         timer.start();
     }
     public void startGame(){
-        paddle = new Paddle(350, 500, 100, 15, Color.WHITE);
+        paddle = new Paddle(350, 500, 100, 15, Color.WHITE,paddleImage);
         ball = new Ball(400,300,20,2,-3,Color.YELLOW,ballImage);
         ball.stickToPaddle(paddle);
         brickMap = new BrickMap(levelManager.getLevel());
@@ -69,6 +84,9 @@ public class GamePanel extends JPanel implements ActionListener {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        if (gameState.isMenu())
+            drawStartScreen(g);
+
         switch (gameState.getStatus()){
             case MENU :
                 drawStartScreen(g);
@@ -96,8 +114,7 @@ public class GamePanel extends JPanel implements ActionListener {
                 ball.stickToPaddle(paddle);
             } else if(gameState.isRunning()){
                 ball.updatePosition();
-                ball.handleWallCollision(this.getWidth());
-                ball.handlePaddleCollision(paddle);
+                CollisionManager.getInstance().checkCollision(ball, paddle, brickMap, getWidth());
                 if (ball.isOutOfBounds(this.getHeight())) {
                     gameState.setStatus(GameStatus.GAME_OVER);
                 }

@@ -36,8 +36,8 @@ public class GameManager implements ActionListener {
                 ball.stickToPaddle(paddle);
             } else if (gameState.isRunning()) {
                 ball.updatePosition();
-                ball.handleWallCollision(width);
-                ball.handlePaddleCollision(paddle);
+                CollisionManager.getInstance().checkCollision(ball, paddle, brickMap, width);
+
 
                 if (ball.isOutOfBounds(height)) {
                     playerManager.loseLife();

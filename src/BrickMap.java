@@ -1,8 +1,8 @@
 import java.awt.*;
 
 public class BrickMap {
-    public Bricks[][] map;
-    private int totalBricks;
+    public Bricks[][] map; // mảng 2 chiều chứa các viên gạch
+    public int totalBricks; // số viên gạch cần phá để qua màn
 
     public BrickMap(int level) {
         generateLayout(level);
@@ -92,6 +92,7 @@ public class BrickMap {
         return brokenBricks;
     }
 
+    // hàm kiểm tra phạm vi nổ của gạch
     private int explore(int row, int col){
         int extraBroken = 0;
         for (int i = row - 1; i <= row + 1; i++) {
