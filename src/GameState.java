@@ -1,3 +1,4 @@
+
 public class GameState {
     private GameStatus status;
 
