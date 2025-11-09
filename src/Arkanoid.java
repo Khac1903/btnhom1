@@ -6,9 +6,9 @@ public class Arkanoid extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(800, 600);
         setLocationRelativeTo(null);
+        setResizable(false); // Prevent resizing for better performance
         add(new GamePanel());
         setVisible(true);
-
     }
     public static void main(String[] args) {
         new Arkanoid();

@@ -11,6 +11,10 @@ public class PlayerManager extends Info {
         }
     }
 
+    public void gainLife() {
+        lives++;
+    }
+
     public void reset() {
         this.lives = 3;
     }

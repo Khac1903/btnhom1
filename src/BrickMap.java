@@ -1,10 +1,17 @@
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class BrickMap {
     public Bricks[][] map;
     private int totalBricks;
+    private Random random;
+    private List<PowerUp> droppedPowerUps;
 
     public BrickMap(int level) {
+        random = new Random();
+        droppedPowerUps = new ArrayList<>();
         generateLayout(level);
     }
 
@@ -55,10 +62,12 @@ public class BrickMap {
                 if (brick.isVisible() && ball.getBound().intersects(brick.getBounds())) {
                     Rectangle ballRect = ball.getBound();
                     Rectangle brickRect = brick.getBounds();
-                    boolean hitFromLeft   = ballRect.x + ballRect.width - ball.dx <= brickRect.x;
-                    boolean hitFromRight  = ballRect.x - ball.dx >= brickRect.x + brickRect.width;
-                    boolean hitFromTop    = ballRect.y + ballRect.height - ball.dy <= brickRect.y;
-                    boolean hitFromBottom = ballRect.y - ball.dy >= brickRect.y + brickRect.height;
+                    int ballDx = ball.getDx();
+                    int ballDy = ball.getDy();
+                    boolean hitFromLeft   = ballRect.x + ballRect.width - ballDx <= brickRect.x;
+                    boolean hitFromRight  = ballRect.x - ballDx >= brickRect.x + brickRect.width;
+                    boolean hitFromTop    = ballRect.y + ballRect.height - ballDy <= brickRect.y;
+                    boolean hitFromBottom = ballRect.y - ballDy >= brickRect.y + brickRect.height;
 
                     if (hitFromLeft || hitFromRight) {
                         ball.reverseX();
@@ -73,15 +82,16 @@ public class BrickMap {
                         brokenBricks++;
                         totalBricks--;
                         brokenBricks += explore(i, j);
+                        dropPowerUp(brick.x + brick.width / 2, brick.y + brick.height);
                         SoundManager.playSound("src/sounds/explore.wav");
                     } else if (brick.getType() == BrickType.INDESTRUCTIBLE) {
                         SoundManager.playSound("src/sounds/indestructible.wav");
                     } else {
                         SoundManager.playSound("src/sounds/ball_hit_brick.wav");
                         if (brick.hit()) {
-
                             brokenBricks++;
                             totalBricks--;
+                            dropPowerUp(brick.x + brick.width / 2, brick.y + brick.height);
                         }
                     }
                     return brokenBricks;
@@ -90,6 +100,23 @@ public class BrickMap {
             }
         }
         return brokenBricks;
+    }
+
+    private void dropPowerUp(int x, int y) {
+        // 30% chance to drop a powerup
+        if (random.nextDouble() < 0.3) {
+            PowerUpType[] types = PowerUpType.values();
+            PowerUpType randomType = types[random.nextInt(types.length)];
+            droppedPowerUps.add(new PowerUp(x, y, randomType));
+        }
+    }
+
+    public List<PowerUp> getDroppedPowerUps() {
+        return droppedPowerUps;
+    }
+
+    public void clearPowerUps() {
+        droppedPowerUps.clear();
     }
 
     private int explore(int row, int col){

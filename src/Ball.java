@@ -76,6 +76,22 @@ public class Ball extends MoveObject {
         dx = -dx;
     }
 
+    public int getDx() {
+        return dx;
+    }
+
+    public int getDy() {
+        return dy;
+    }
+
+    public void setDx(int dx) {
+        this.dx = dx;
+    }
+
+    public void setDy(int dy) {
+        this.dy = dy;
+    }
+
     public boolean isOutOfBounds(int panelHeight) {
         return y >= panelHeight;
     }
@@ -95,8 +111,22 @@ public class Ball extends MoveObject {
         if (image != null) {
             g.drawImage(image, x, y, width, height, null);
         } else {
-            g.setColor(Color.RED);
+            // Christmas snowball or ornament
+            // Draw snowball with gradient effect
+            g.setColor(Color.WHITE);
             g.fillOval(x, y, width, height);
+            
+            // Add highlight for 3D effect
+            g.setColor(new Color(255, 255, 255, 200));
+            g.fillOval(x + width/4, y + height/4, width/3, height/3);
+            
+            // Add red/green stripe for Christmas ornament effect
+            g.setColor(new Color(220, 20, 60, 150));
+            g.fillOval(x, y + height/3, width, height/3);
+            
+            // Border
+            g.setColor(new Color(200, 200, 200));
+            g.drawOval(x, y, width, height);
         }
     }
 }

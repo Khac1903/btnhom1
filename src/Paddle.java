@@ -51,8 +51,32 @@ public class Paddle extends MoveObject{
         if (image != null) {
             g.drawImage(image, x, y, width, height, null);
         } else {
-            g.setColor(Color.RED);
-            g.fillOval(x, y, width, height);
+            // Christmas sleigh paddle
+            // Main body (red)
+            g.setColor(new Color(220, 20, 60)); // Christmas Red
+            g.fillRoundRect(x, y, width, height, 10, 10);
+            
+            // Green trim
+            g.setColor(new Color(34, 139, 34)); // Christmas Green
+            g.fillRoundRect(x, y, width, height/3, 10, 10);
+            g.fillRoundRect(x, y + 2*height/3, width, height/3, 10, 10);
+            
+            // Gold runners (sleigh effect)
+            g.setColor(new Color(255, 215, 0)); // Gold
+            g.fillOval(x - 5, y + height - 3, 10, 6);
+            g.fillOval(x + width - 5, y + height - 3, 10, 6);
+            
+            // Border
+            g.setColor(new Color(139, 69, 19)); // Brown
+            g.drawRoundRect(x, y, width, height, 10, 10);
         }
+    }
+
+    public void setWidth(int newWidth) {
+        this.width = newWidth;
+    }
+
+    public int getOriginalWidth() {
+        return 100; // Default width
     }
 }

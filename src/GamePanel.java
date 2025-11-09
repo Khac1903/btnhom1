@@ -14,12 +14,14 @@ public class GamePanel extends JPanel implements ActionListener {
         setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         setBackground(Color.BLACK);
         setFocusable(true);
+        setDoubleBuffered(true); // Enable double buffering for smoother rendering
         addKeyListener(new GameKeyAdapter());
 
         gameManager = new GameManager();
         gameRenderer = new GameRenderer();
 
-        timer = new Timer(10, this);
+        // 16ms = ~60 FPS (smooth gameplay)
+        timer = new Timer(16, this);
         timer.start();
     }
 
