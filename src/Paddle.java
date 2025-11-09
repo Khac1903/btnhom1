@@ -7,7 +7,8 @@ import java.io.File;
 import java.io.IOException;
 
 public class Paddle extends MoveObject{
-   private BufferedImage image;
+
+    private BufferedImage image;
     public Paddle(int x, int y, int width, int height ,Color color , BufferedImage image){
         super(x,color,0,0,height,width,y);
         this.image = image;
@@ -15,7 +16,7 @@ public class Paddle extends MoveObject{
     public Paddle(int x, int y, int width, int height, Color color) {
         super(x,color,0,0,height,width,y);
         try {
-           this.image = ImageIO.read(new File("images/paddle.png"));
+            this.image = ImageIO.read(new File("images/paddle.png"));
         }
         catch (IOException e) {
             System.out.println("Không thể tải ảnh paddle!");
@@ -54,5 +55,19 @@ public class Paddle extends MoveObject{
             g.setColor(Color.RED);
             g.fillOval(x, y, width, height);
         }
+    }
+
+    public void changeWidth(int amount) {
+        this.width += amount;
+
+        if(this.width < 50){
+            this.width = 50;
+        }
+        if(this.width > 200){
+            this.width = 200;
+        }
+    }
+    public void resetWidth(){
+        this.width = 125;
     }
 }

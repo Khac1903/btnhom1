@@ -12,7 +12,6 @@ public class Ball extends MoveObject {
         this.image = image;
     }
 
-    // Constructor phụ: tự load ảnh nếu không truyền vào
     public Ball(int x, int y, int size, int dx, int dy, Color color) {
         super(x, color, dy, dx, size, size, y);
         try {
@@ -22,6 +21,15 @@ public class Ball extends MoveObject {
             e.printStackTrace();
             this.image = null;
         }
+    }
+
+
+    public double getDx(){
+        return dx;
+    }
+
+    public double getDy(){
+        return dy;
     }
 
     public void updatePosition() {
@@ -42,7 +50,8 @@ public class Ball extends MoveObject {
         Rectangle ballRect = this.getBound();
         Rectangle paddleRect = paddle.getBound();
         if (ballRect.intersects(paddleRect) && dy > 0) {
-            SoundManager.playSound("src/sounds/ball_hit_paddle.wav");
+            //SoundManager.playSound("src/sounds/ball_hit_paddle.wav");
+        }
 
             double paddleCenter = paddle.x + paddle.width / 2.0;
             double ballCenter = x + width / 2.0;
@@ -89,8 +98,12 @@ public class Ball extends MoveObject {
         this.dx = 2;
         this.dy = -3;
     }
+    public void changeSpeed(double multiplier){
+        dy *= multiplier;
+        dx *= multiplier;
+    }
 
-    // 🎨 Vẽ bóng (ảnh nếu có, không thì vẽ hình tròn)
+
     public void draw(Graphics g) {
         if (image != null) {
             g.drawImage(image, x, y, width, height, null);
@@ -99,4 +112,3 @@ public class Ball extends MoveObject {
             g.fillOval(x, y, width, height);
         }
     }
-}

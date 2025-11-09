@@ -26,3 +26,4 @@ public enum BrickType {
         return image;
     }
 }
+
