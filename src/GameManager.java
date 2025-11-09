@@ -52,7 +52,7 @@ public class GameManager implements ActionListener {
                     }
                 }
 
-                int broken = brickMap.handleBallCollision(ball);
+                int broken = CollisionManager.getInstance().handleBallCollision(ball, brickMap);
                 if (broken > 0) scoreManager.increaseScore();
 
                 if (brickMap.isLevelComplete()) {

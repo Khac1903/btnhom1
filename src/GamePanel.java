@@ -118,7 +118,7 @@ public class GamePanel extends JPanel implements ActionListener {
                 if (ball.isOutOfBounds(this.getHeight())) {
                     gameState.setStatus(GameStatus.GAME_OVER);
                 }
-                int brokenBricks = brickMap.handleBallCollision(ball);
+                int brokenBricks = CollisionManager.getInstance().handleBallCollision(ball, brickMap);
                 if (brokenBricks > 0) {
                     scoreManager.increaseScore();
                 }

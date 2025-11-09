@@ -57,72 +57,77 @@ public class CollisionManager {
 
     /**
      * xử lí va chạm của bóng với gạch
+     *
      * @param ball bóng
-     * @param bMap bản đồ
-     * @return
+     * @param brickMap bản đồ
      */
-    public int handleBallCollision(Ball ball, BrickMap bMap){
+    public int handleBallCollision(Ball ball, BrickMap brickMap) {
         int brokenBricks = 0;
-        for(int i=0;i<bMap.map.length;i++){
-            for(int j=0;j<bMap.map[i].length;j++){
-                Bricks brick = bMap.map[i][j];
+        for (int i = 0; i < brickMap.map.length; i++) {
+            for (int j = 0; j < brickMap.map[i].length; j++) {
+                Bricks brick = brickMap.map[i][j];
                 if (brick.isVisible() && ball.getBound().intersects(brick.getBounds())) {
+
                     Rectangle ballRect = ball.getBound();
                     Rectangle brickRect = brick.getBounds();
+
                     boolean hitFromLeft   = ballRect.x + ballRect.width - ball.dx <= brickRect.x;
                     boolean hitFromRight  = ballRect.x - ball.dx >= brickRect.x + brickRect.width;
                     boolean hitFromTop    = ballRect.y + ballRect.height - ball.dy <= brickRect.y;
                     boolean hitFromBottom = ballRect.y - ball.dy >= brickRect.y + brickRect.height;
 
+                    // 1️⃣ Luôn phản xạ trước
                     if (hitFromLeft || hitFromRight) {
                         ball.reverseX();
-                    } else if (hitFromTop || hitFromBottom) {
-                        ball.reverseY();
+                        // đẩy bóng ra khỏi brick một chút
+                        ball.setX(hitFromLeft ? brickRect.x - ballRect.width - 1 : brickRect.x + brickRect.width + 1);
                     } else {
                         ball.reverseY();
+                        ball.setY(hitFromTop ? brickRect.y - ballRect.height - 1 : brickRect.y + brickRect.height + 1);
                     }
-                    if (brick.getType() == BrickType.EXPLORE) {
 
+                    // 2️⃣ Sau đó xử lý loại gạch
+                    if (brick.getType() == BrickType.EXPLORE) {
                         brick.setVisible(false);
                         brokenBricks++;
-                        bMap.totalBricks--;
-                        brokenBricks += explore(i, j,bMap);
+                        brickMap.totalBricks--;
+                        brokenBricks += explore(i, j, brickMap);
                         SoundManager.playSound("src/sounds/explore.wav");
+
                     } else if (brick.getType() == BrickType.INDESTRUCTIBLE) {
                         SoundManager.playSound("src/sounds/indestructible.wav");
+
                     } else {
                         SoundManager.playSound("src/sounds/ball_hit_brick.wav");
                         if (brick.hit()) {
-
                             brokenBricks++;
-                            bMap.totalBricks--;
+                            brickMap.totalBricks--;
                         }
                     }
-                    return brokenBricks;
+
+                    // 3️⃣ Không return sớm — tiếp tục duyệt
                 }
             }
         }
         return brokenBricks;
     }
 
-    // hàm kiểm tra phạm vi nổ của gạch
-    private int explore(int row, int col, BrickMap bMap){
+    private int explore(int row, int col, BrickMap brickMap){
         int extraBroken = 0;
         for (int i = row - 1; i <= row + 1; i++) {
             for (int j = col - 1; j <= col + 1; j++) {
-                if (i >= 0 && i < bMap.map.length && j >= 0 && j < bMap.map[0].length) {
-                    Bricks neighbor = bMap.map[i][j];
+                if (i >= 0 && i < brickMap.map.length && j >= 0 && j < brickMap.map[0].length) {
+                    Bricks neighbor = brickMap.map[i][j];
                     if (neighbor.isVisible() && neighbor.getType() != BrickType.INDESTRUCTIBLE) {
                         neighbor.setVisible(false);
                         extraBroken++;
-                        bMap.totalBricks--;
+                        brickMap.totalBricks--;
                     }
                 }
             }
         }
         return extraBroken;
     }
-
     // kiểm tra va chạm với cạnh cửa sổ
     public void handleWallCollision(Ball ball, int panelWidth) {
         if (ball.x <= 0 || ball.x >= panelWidth - ball.width) {

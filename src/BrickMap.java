@@ -47,68 +47,6 @@ public class BrickMap {
             }
         }
     }
-    public int handleBallCollision(Ball ball){
-        int brokenBricks = 0;
-        for(int i=0;i<map.length;i++){
-            for(int j=0;j<map[i].length;j++){
-                Bricks brick = map[i][j];
-                if (brick.isVisible() && ball.getBound().intersects(brick.getBounds())) {
-                    Rectangle ballRect = ball.getBound();
-                    Rectangle brickRect = brick.getBounds();
-                    boolean hitFromLeft   = ballRect.x + ballRect.width - ball.dx <= brickRect.x;
-                    boolean hitFromRight  = ballRect.x - ball.dx >= brickRect.x + brickRect.width;
-                    boolean hitFromTop    = ballRect.y + ballRect.height - ball.dy <= brickRect.y;
-                    boolean hitFromBottom = ballRect.y - ball.dy >= brickRect.y + brickRect.height;
-
-                    if (hitFromLeft || hitFromRight) {
-                        ball.reverseX();
-                    } else if (hitFromTop || hitFromBottom) {
-                        ball.reverseY();
-                    } else {
-                        ball.reverseY();
-                    }
-                    if (brick.getType() == BrickType.EXPLORE) {
-
-                        brick.setVisible(false);
-                        brokenBricks++;
-                        totalBricks--;
-                        brokenBricks += explore(i, j);
-                        SoundManager.playSound("src/sounds/explore.wav");
-                    } else if (brick.getType() == BrickType.INDESTRUCTIBLE) {
-                        SoundManager.playSound("src/sounds/indestructible.wav");
-                    } else {
-                        SoundManager.playSound("src/sounds/ball_hit_brick.wav");
-                        if (brick.hit()) {
-
-                            brokenBricks++;
-                            totalBricks--;
-                        }
-                    }
-                    return brokenBricks;
-                }
-
-            }
-        }
-        return brokenBricks;
-    }
-
-    // hàm kiểm tra phạm vi nổ của gạch
-    private int explore(int row, int col){
-        int extraBroken = 0;
-        for (int i = row - 1; i <= row + 1; i++) {
-            for (int j = col - 1; j <= col + 1; j++) {
-                if (i >= 0 && i < map.length && j >= 0 && j < map[0].length) {
-                    Bricks neighbor = map[i][j];
-                    if (neighbor.isVisible() && neighbor.getType() != BrickType.INDESTRUCTIBLE) {
-                        neighbor.setVisible(false);
-                        extraBroken++;
-                        totalBricks--;
-                    }
-                }
-            }
-        }
-        return extraBroken;
-    }
 
     public void breakBrick() {
         totalBricks--;
