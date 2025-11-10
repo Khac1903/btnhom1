@@ -16,7 +16,7 @@ public class Ball extends MoveObject {
     public Ball(int x, int y, int size, int dx, int dy, Color color) {
         super(x, color, dy, dx, size, size, y);
         try {
-            this.image = ImageIO.read(new File("images/ball3.png")); // đổi đường dẫn nếu cần
+            this.image = ImageIO.read(new File("images/c.png")); // đổi đường dẫn nếu cần
         } catch (IOException e) {
             System.out.println("Không thể tải ảnh bóng!");
             e.printStackTrace();
@@ -53,6 +53,12 @@ public class Ball extends MoveObject {
         this.dx = 2;
         this.dy = -3;
     }
+
+    public void changeSpeed(double multiplier){
+        dy *= multiplier;
+        dx *= multiplier;
+    }
+
 
     // 🎨 Vẽ bóng (ảnh nếu có, không thì vẽ hình tròn)
     public void draw(Graphics g) {

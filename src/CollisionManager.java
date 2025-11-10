@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.ArrayList;
 
 public class CollisionManager {
     private static CollisionManager instance; // biến truy cập duy nhất
@@ -14,10 +15,10 @@ public class CollisionManager {
         return instance;
     }
 
-    public void checkCollision(Ball ball, Paddle paddle, BrickMap bMap, int panelWidth) {
+    public void checkCollision(Ball ball, Paddle paddle, BrickMap bMap, int panelWidth, ArrayList<PowerUp> powerUps) {
         handleWallCollision(ball, panelWidth);
         handlePaddleCollision(ball, paddle);
-        handleBallCollision(ball, bMap);
+        handleBallCollision(ball, bMap, powerUps);
 
     }
 
@@ -61,58 +62,54 @@ public class CollisionManager {
      * @param ball bóng
      * @param brickMap bản đồ
      */
-    public int handleBallCollision(Ball ball, BrickMap brickMap) {
+    public int handleBallCollision(Ball ball, BrickMap brickMap, ArrayList<PowerUp> powerUps) {
         int brokenBricks = 0;
         for (int i = 0; i < brickMap.map.length; i++) {
             for (int j = 0; j < brickMap.map[i].length; j++) {
                 Bricks brick = brickMap.map[i][j];
                 if (brick.isVisible() && ball.getBound().intersects(brick.getBounds())) {
-
                     Rectangle ballRect = ball.getBound();
                     Rectangle brickRect = brick.getBounds();
-
                     boolean hitFromLeft   = ballRect.x + ballRect.width - ball.dx <= brickRect.x;
                     boolean hitFromRight  = ballRect.x - ball.dx >= brickRect.x + brickRect.width;
                     boolean hitFromTop    = ballRect.y + ballRect.height - ball.dy <= brickRect.y;
                     boolean hitFromBottom = ballRect.y - ball.dy >= brickRect.y + brickRect.height;
 
-                    // 1️⃣ Luôn phản xạ trước
                     if (hitFromLeft || hitFromRight) {
                         ball.reverseX();
-                        // đẩy bóng ra khỏi brick một chút
-                        ball.setX(hitFromLeft ? brickRect.x - ballRect.width - 1 : brickRect.x + brickRect.width + 1);
+                    } else if (hitFromTop || hitFromBottom) {
+                        ball.reverseY();
                     } else {
                         ball.reverseY();
-                        ball.setY(hitFromTop ? brickRect.y - ballRect.height - 1 : brickRect.y + brickRect.height + 1);
                     }
-
-                    // 2️⃣ Sau đó xử lý loại gạch
                     if (brick.getType() == BrickType.EXPLORE) {
+                        // 2️⃣ Sau đó xử lý loại gạch
                         brick.setVisible(false);
                         brokenBricks++;
                         brickMap.totalBricks--;
-                        brokenBricks += explore(i, j, brickMap);
+                        brokenBricks += explore(i, j, brickMap, powerUps);
+                        spawnPowerUp(brick.x, brick.y, brickMap, powerUps);
                         SoundManager.playSound("src/sounds/explore.wav");
-
                     } else if (brick.getType() == BrickType.INDESTRUCTIBLE) {
                         SoundManager.playSound("src/sounds/indestructible.wav");
 
                     } else {
                         SoundManager.playSound("src/sounds/ball_hit_brick.wav");
                         if (brick.hit()) {
+
                             brokenBricks++;
                             brickMap.totalBricks--;
+                            spawnPowerUp(brick.x, brick.y, brickMap, powerUps);
                         }
                     }
-
-                    // 3️⃣ Không return sớm — tiếp tục duyệt
+                    return brokenBricks;
                 }
             }
         }
         return brokenBricks;
     }
 
-    private int explore(int row, int col, BrickMap brickMap){
+    private int explore(int row, int col, BrickMap brickMap, ArrayList<PowerUp> powerUps){
         int extraBroken = 0;
         for (int i = row - 1; i <= row + 1; i++) {
             for (int j = col - 1; j <= col + 1; j++) {
@@ -128,6 +125,14 @@ public class CollisionManager {
         }
         return extraBroken;
     }
+
+    private void spawnPowerUp(int x, int y, BrickMap brickMap, ArrayList<PowerUp> powerUps){
+        if(brickMap.rand.nextInt(4) == 0){
+            PowerUpType randomType = PowerUpType.values()[brickMap.rand.nextInt(PowerUpType.values().length)];
+            powerUps.add(new PowerUp(x, y,  randomType));
+        }
+    }
+
     // kiểm tra va chạm với cạnh cửa sổ
     public void handleWallCollision(Ball ball, int panelWidth) {
         if (ball.x <= 0 || ball.x >= panelWidth - ball.width) {

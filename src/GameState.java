@@ -25,6 +25,8 @@ public class GameState {
         return status == GameStatus.RUNNING;
     }
 
+    public boolean isPaused() { return status == GameStatus.PAUSED;}
+
     public boolean isGameOver() {
         return status == GameStatus.GAME_OVER;
     }

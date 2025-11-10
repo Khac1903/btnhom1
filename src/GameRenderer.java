@@ -9,14 +9,18 @@ public class GameRenderer {
 
         switch (state.getStatus()) {
             case MENU:
-                drawStartScreen(g, width, height);
+                drawMenuScreen(g, width, height, manager);
                 break;
             case READY:
             case RUNNING:
                 drawGame(g, manager);
                 break;
+            case PAUSED:
+                drawGame(g, manager);
+                drawPauseMenu(g, width, height, manager);
+                break;
             case GAME_OVER:
-                drawGameOver(g, width, height);
+                drawGameOverMenu(g, width, height, manager);
                 break;
         }
 
@@ -31,19 +35,95 @@ public class GameRenderer {
         manager.getBrickMap().draw(g);
     }
 
-    private void drawStartScreen(Graphics g, int width, int height) {
+    private void drawMenuScreen(Graphics g, int width, int height, GameManager manager) {
+        g.setColor(Color.BLACK);
+        g.fillRect(0,0, width, height);
         g.setColor(Color.WHITE);
-        g.setFont(MENU_FONT);
-        String msg = "Nhấn Enter để bắt đầu";
-        FontMetrics m = g.getFontMetrics(g.getFont());
-        g.drawString(msg, (width - m.stringWidth(msg)) / 2, height / 2);
+        g.setFont(new Font("Consolas", Font.BOLD, 48));
+        String title = "AKANOID";
+        g.drawString(title, (width - g.getFontMetrics().stringWidth(title))/2, height/4);
+
+        g.setFont(new Font("Arial", Font.BOLD, 28));
+        String[] options = {"Start Game", "How to Game", "Exit"};
+        int selected = manager.getSelectedMenuIndex();
+        for(int i=0; i<options.length; i++) {
+            if(i == selected) {
+                g.setColor(Color.YELLOW);
+            } else {
+                g.setColor(Color.LIGHT_GRAY);
+            }
+            g.drawString(options[i], (width - g.getFontMetrics().stringWidth(options[i]))/2, height/2 + i*50 );
+        }
+        g.setColor(Color.GRAY);
+        g.setFont(new Font("Arial", Font.PLAIN, 18));
+        g.drawString("Use ↑/↓ to move, ENTER to select, SPACE to paused",
+                (width - g.getFontMetrics().stringWidth("Use ↑/↓ to move, ENTER to select, SPACE to paused")) / 2,
+                height - 40);
     }
 
-    private void drawGameOver(Graphics g, int width, int height) {
+    private void drawGameOverMenu(Graphics g, int width, int height, GameManager manager) {
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, width, height);
+
         g.setColor(Color.RED);
-        g.setFont(GAME_OVER_FONT);
-        FontMetrics m = g.getFontMetrics(g.getFont());
-        String msg = "Game Over";
-        g.drawString(msg, (width - m.stringWidth(msg)) / 2, height / 2);
+        g.setFont(new Font("Arial", Font.BOLD, 60));
+        String title = "GAME OVER";
+        g.drawString(title, (width - g.getFontMetrics().stringWidth(title)) / 2, height / 3);
+
+        String[] options = {"Main Menu", "Exit"};
+        int selected = manager.getGameOverMenuIndex();
+
+        g.setFont(new Font("Arial", Font.BOLD, 28));
+        for (int i = 0; i < options.length; i++) {
+            if (i == selected)
+                g.setColor(Color.YELLOW);
+            else
+                g.setColor(Color.LIGHT_GRAY);
+
+            g.drawString(
+                    options[i],
+                    (width - g.getFontMetrics().stringWidth(options[i])) / 2,
+                    height / 2 + i * 50
+            );
+        }
+
+        g.setFont(new Font("Arial", Font.PLAIN, 18));
+        g.setColor(Color.WHITE);
+        g.drawString("Use ↑/↓ to move, ENTER to select",
+                (width - g.getFontMetrics().stringWidth("Use ↑/↓ to move, ENTER to select")) / 2,
+                height - 40);
+    }
+
+    private void drawPauseMenu(Graphics g, int width, int height, GameManager manager) {
+        g.setColor(new Color(0, 0, 0, 180));
+        g.fillRect(0, 0, width, height);
+
+        g.setColor(Color.YELLOW);
+        g.setFont(new Font("Arial", Font.BOLD, 50));
+        String title = "PAUSED";
+        g.drawString(title, (width - g.getFontMetrics().stringWidth(title)) / 2, height / 3);
+
+        String[] options = {"Resume", "Restart", "Exit to Menu"};
+        int selected = manager.getPauseMenuIndex();
+
+        g.setFont(new Font("Arial", Font.BOLD, 28));
+        for (int i = 0; i < options.length; i++) {
+            if (i == selected)
+                g.setColor(Color.GREEN);
+            else
+                g.setColor(Color.LIGHT_GRAY);
+
+            g.drawString(
+                    options[i],
+                    (width - g.getFontMetrics().stringWidth(options[i])) / 2,
+                    height / 2 + i * 50
+            );
+        }
+
+        g.setFont(new Font("Arial", Font.PLAIN, 18));
+        g.setColor(Color.WHITE);
+        g.drawString("Use ↑/↓ to move, ENTER to select",
+                (width - g.getFontMetrics().stringWidth("Use ↑/↓ to move, ENTER to select")) / 2,
+                height - 40);
     }
 }

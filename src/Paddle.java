@@ -1,50 +1,47 @@
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
-public class Paddle extends MoveObject{
-    private Image paddleImage;
+public class Paddle extends MoveObject {
+    private BufferedImage paddleImage;
 
-    public Paddle(int x, int y, int width, int height ,Color color){
+    // Constructor tự load ảnh
+    public Paddle(int x, int y, int width, int height, Color color) {
         super(x, color, 0, 0, height, width, y);
-        this.paddleImage = null;
-    }
-
-    public Paddle(int x, int y, int width, int height,Color color, Image paddleImage) {
-        super(x, color, 0, 0, height, width, y);
-        this.paddleImage = paddleImage;
-    }
-
-    @Override
-    public void move(int panelWidth, int panelHeight){
-        x += dx;
-        if(x<=0){
-            x=0;
-        }
-        if(x>=panelWidth - width){
-            x = panelWidth - width;
-        }
-    }
-    public void keyPressed(KeyEvent e){
-        if(e.getKeyCode() == KeyEvent.VK_LEFT){
-            dx = -5;
-        }
-        if(e.getKeyCode() == KeyEvent.VK_RIGHT){
-            dx = 5;
+        try {
+            this.paddleImage = ImageIO.read(new File("images/paddle.png")); // giống Ball
+        } catch (IOException e) {
+            System.out.println("Không thể tải ảnh paddle!");
+            paddleImage = null;
         }
     }
 
-    public void keyReleased(KeyEvent e){
-        if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_RIGHT){
-            dx = 0;
-        }
-    }
     @Override
     public void draw(Graphics g) {
         if (paddleImage != null) {
             g.drawImage(paddleImage, x, y, width, height, null);
         } else {
-            super.draw(g); // vẽ hình chữ nhật nếu không có ảnh
+            super.draw(g); // fallback: hình chữ nhật
         }
     }
 
+    @Override
+    public void move(int panelWidth, int panelHeight) {
+        x += dx;
+        if (x <= 0) x = 0;
+        if (x >= panelWidth - width) x = panelWidth - width;
+    }
+
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) dx = -5;
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) dx = 5;
+    }
+
+    public void keyReleased(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_RIGHT)
+            dx = 0;
+    }
 }
