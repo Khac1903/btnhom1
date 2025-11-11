@@ -6,13 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="5bec9d55-9017-45d9-b9cf-981164d850f9" name="Changes" comment="Khac commit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/highScores.properties" beforeDir="false" afterPath="$PROJECT_DIR$/highScores.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Ball.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Ball.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BrickMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BrickMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GamePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GameRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameRenderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/HighScoreManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/HighScoreManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
