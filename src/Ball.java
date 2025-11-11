@@ -15,7 +15,7 @@ public class Ball extends MoveObject {
     public Ball(int x, int y, int size, int dx, int dy, Color color) {
         super(x, color, dx, dy, size, size, y);
         try {
-            this.image = ImageIO.read(new File("images/ball.png")); // đổi đường dẫn nếu cần
+            this.image = ImageIO.read(new File(GameConstants.IMAGE_BALL));
         } catch (IOException e) {
             System.out.println("Không thể tải ảnh bóng!");
             e.printStackTrace();
@@ -38,43 +38,52 @@ public class Ball extends MoveObject {
         y += dy;
     }
 
-    public void handleWallCollision(int panelWidth) {
-        if (x <= 0 || x >= panelWidth - width) {
+    public void handleWallCollision(int panelWidth, int panelHeight) {
+        // Va chạm với cạnh trái
+        if (x <= GameConstants.ZERO) {
+            x = GameConstants.ZERO;
             dx = -dx;
         }
-        if (y <= 0) {
+        // Va chạm với cạnh phải
+        if (x >= panelWidth - width) {
+            x = panelWidth - width;
+            dx = -dx;
+        }
+        // Va chạm với cạnh trên
+        if (y <= GameConstants.ZERO) {
+            y = GameConstants.ZERO;
             dy = -dy;
         }
+        // Cạnh dưới được xử lý bởi isOutOfBounds() trong GameManager
     }
 
-    public void handlePaddleCollision(Paddle paddle) {
+    public boolean handlePaddleCollision(Paddle paddle) {
         Rectangle ballRect = this.getBound();
         Rectangle paddleRect = paddle.getBound();
-        if (ballRect.intersects(paddleRect) && dy > 0) {
-            SoundManager.playSound("src/sounds/ball_hit_paddle.wav");
-
+        
+        // Chỉ xử lý khi bóng đang di chuyển xuống và có va chạm
+        if (ballRect.intersects(paddleRect) && dy > GameConstants.ZERO) {
+            SoundManager.playSound(GameConstants.SOUND_BALL_HIT_PADDLE);
+            
+            // Đặt bóng lên trên paddle để tránh bị kẹt
+            y = paddle.y - height;
+            
+            // Đổi chiều dy (bóng đi lên)
+            dy = -Math.abs(dy);
+            
+            // Điều chỉnh dx một chút dựa trên vị trí va chạm trên paddle
             double paddleCenter = paddle.x + paddle.width / 2.0;
             double ballCenter = x + width / 2.0;
             double offset = (ballCenter - paddleCenter) / (paddle.width / 2.0);
-
-            double speed = Math.sqrt(dx * dx + dy * dy);
-            double angle = Math.toRadians(60 * offset);
-            double paddleInfluence = paddle.dx * 0.2;
-
-            double newDx = speed * Math.sin(angle) + paddleInfluence;
-            double newDy = -Math.abs(speed * Math.cos(angle));
-
-            dx = (int) Math.round(newDx);
-            dy = (int) Math.round(newDy);
-
-            y = paddle.y - height;
-
-            if (dx > 0) dx = Math.max(2, Math.min(3, dx));
-            else dx = Math.min(-2, Math.max(-3, dx));
-
-            if (dy > 0) dy = Math.max(2, Math.min(3, dy));
-            else dy = Math.min(-2, Math.max(-3, dy));
+            
+            // Thay đổi dx dựa trên vị trí va chạm
+            if (Math.abs(dx) < GameConstants.BALL_DX_THRESHOLD) {
+                dx += (int)(offset * GameConstants.BALL_DX_ADJUSTMENT);
+            }
+            
+            return true;
         }
+        return false;
     }
 
     public void reverseY() {
@@ -95,8 +104,8 @@ public class Ball extends MoveObject {
     }
 
     public void launch() {
-        this.dx = 2;
-        this.dy = -3;
+        this.dx = GameConstants.BALL_INITIAL_DX;
+        this.dy = GameConstants.BALL_INITIAL_DY;
     }
 
     public void changeSpeed(double multiplier) {

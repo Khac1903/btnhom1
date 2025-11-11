@@ -1,4 +1,3 @@
-import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -50,9 +49,13 @@ public class GameManager implements ActionListener {
 
     private void resetGameObjects() {
         ball = new ArrayList<>();
-        ball.add(new Ball(390, 450, 20, 20, 4, Color.RED));
-        paddle = new Paddle(350, 550, 100, 15, Color.GREEN);
-        brickMap = new BrickMap(1);
+        ball.add(new Ball(GameConstants.BALL_INITIAL_X_ALT, GameConstants.BALL_INITIAL_Y_ALT, 
+                         GameConstants.BALL_SIZE, GameConstants.BALL_SIZE, GameConstants.BALL_DY_ALT, 
+                         GameConstants.BALL_COLOR_ALT));
+        paddle = new Paddle(GameConstants.PADDLE_INITIAL_X, GameConstants.PADDLE_INITIAL_Y_ALT, 
+                           GameConstants.PADDLE_ORIGINAL_WIDTH, GameConstants.PADDLE_HEIGHT, 
+                           GameConstants.PADDLE_COLOR_ALT);
+        brickMap = new BrickMap(GameConstants.ONE);
         powerUps = new ArrayList<>();
 
         scoreManager = new ScoreManager();
@@ -61,11 +64,15 @@ public class GameManager implements ActionListener {
     }
 
     public void startGame() {
-        paddle = new Paddle(350, 500, 100, 15, Color.WHITE);
+        paddle = new Paddle(GameConstants.PADDLE_INITIAL_X, GameConstants.PADDLE_INITIAL_Y, 
+                           GameConstants.PADDLE_ORIGINAL_WIDTH, GameConstants.PADDLE_HEIGHT, 
+                           GameConstants.PADDLE_COLOR);
         paddle.resetWidth();
         ball = new ArrayList<>();
         ball.clear();
-        ball.add(new Ball(400, 300, 20, 2, -3, Color.YELLOW));
+        ball.add(new Ball(GameConstants.BALL_INITIAL_X, GameConstants.BALL_INITIAL_Y, 
+                         GameConstants.BALL_SIZE, GameConstants.BALL_INITIAL_DX, 
+                         GameConstants.BALL_INITIAL_DY, GameConstants.BALL_COLOR));
         ball.get(0).stickToPaddle(paddle);
         brickMap = new BrickMap(levelManager.getLevel());
         powerUps.clear();
@@ -90,18 +97,33 @@ public class GameManager implements ActionListener {
                     playerManager.loseLife();
                     if (playerManager.isOutOfLives()) {
                         highScoreManager.updateScore(playerName, scoreManager.getScore());
-                        SoundManager.playSound("src/sounds/gameover.wav");
+                        SoundManager.playSound(GameConstants.SOUND_GAMEOVER);
                         gameState.setStatus(GameStatus.GAME_OVER);
                     } else {
-                        SoundManager.playSound("src/sounds/loselives.wav");
-                        ball.add(new Ball(400, 300, 20, 2, -3, Color.YELLOW));
+                        SoundManager.playSound(GameConstants.SOUND_LOSE_LIVES);
+                        ball.add(new Ball(GameConstants.BALL_INITIAL_X, GameConstants.BALL_INITIAL_Y, 
+                                         GameConstants.BALL_SIZE, GameConstants.BALL_INITIAL_DX, 
+                                         GameConstants.BALL_INITIAL_DY, GameConstants.BALL_COLOR));
                         ball.get(0).stickToPaddle(paddle);
 
                         gameState.setStatus(GameStatus.READY);
                     }
                 }
-                int broken = CollisionManager.getInstance().checkCollision(ball, paddle, brickMap, width, powerUps);
-                if (broken > 0) {
+                // Xử lý va chạm cho mỗi ball
+                int totalBroken = 0;
+                for (Ball b : ball) {
+                    // Va chạm với tường (4 cạnh)
+                    b.handleWallCollision(width, height);
+                    
+                    // Va chạm với paddle
+                    b.handlePaddleCollision(paddle);
+                    
+                    // Va chạm với gạch
+                    totalBroken += brickMap.handleBallCollision(b, powerUps);
+                }
+                
+                // Tăng điểm dựa trên số gạch bị phá
+                if (totalBroken > 0) {
                     scoreManager.increaseScore();
                 }
                 for(PowerUp pu : powerUps){
@@ -128,8 +150,12 @@ public class GameManager implements ActionListener {
             case MULTI_BALL:
                 if (!ball.isEmpty()) {
                     Ball existingBall = ball.get(0);
-                    ball.add(new Ball((int) existingBall.x, (int) existingBall.y, 20, 2, -3, Color.YELLOW));
-                    ball.add(new Ball((int) existingBall.x, (int) existingBall.y, 20, -2, -3, Color.YELLOW));
+                    ball.add(new Ball((int) existingBall.x, (int) existingBall.y, 
+                                     GameConstants.BALL_SIZE, GameConstants.BALL_INITIAL_DX, 
+                                     GameConstants.BALL_INITIAL_DY, GameConstants.BALL_COLOR));
+                    ball.add(new Ball((int) existingBall.x, (int) existingBall.y, 
+                                     GameConstants.BALL_SIZE, GameConstants.BALL_DX_ALT, 
+                                     GameConstants.BALL_INITIAL_DY, GameConstants.BALL_COLOR));
                 }
                 break;
             case PADDLE_WIDE:
@@ -140,11 +166,11 @@ public class GameManager implements ActionListener {
                 break;
             case BALL_FAST:
                 for (Ball b : ball) {
-                    b.changeSpeed(1.2);
+                    b.changeSpeed(GameConstants.POWERUP_SPEED_MULTIPLIER);
                 }
                 break;
         }
-        SoundManager.playSound("src/sounds/powerup.wav");
+        SoundManager.playSound(GameConstants.SOUND_POWERUP);
     }
 
             public void reset () {
@@ -191,46 +217,46 @@ public class GameManager implements ActionListener {
 
             public void moveMenuSelectionUp () {
                 selectedMenuIndex--;
-                if (selectedMenuIndex < 0) selectedMenuIndex = 3;
+                if (selectedMenuIndex < GameConstants.ZERO) selectedMenuIndex = GameConstants.MENU_MAX_INDEX;
             }
 
             public void moveMenuSelectionDown () {
                 selectedMenuIndex++;
-                if (selectedMenuIndex > 3) selectedMenuIndex = 0;
+                if (selectedMenuIndex > GameConstants.MENU_MAX_INDEX) selectedMenuIndex = GameConstants.ZERO;
             }
 
             public void selectMenuOption () {
                 switch (selectedMenuIndex) {
-                    case 0: // Start Game
+                    case GameConstants.MENU_INDEX_START: // Start Game
                         reset();
                         gameState.setStatus(GameStatus.READY);
                         break;
-                    case 1: // Top 5 Players
+                    case GameConstants.MENU_INDEX_TOP_PLAYERS: // Top 5 Players
                         showTop5Dialog();
                         break;
-                    case 2: // How to Play
+                    case GameConstants.MENU_INDEX_HOW_TO_PLAY: // How to Play
                         JOptionPane.showMessageDialog(null,
                                 "Cách chơi:\n- Dùng ← → để di chuyển thanh đỡ\n- ↑ để phóng bóng\n- P để tạm dừng",
                                 "Hướng dẫn",
                                 JOptionPane.INFORMATION_MESSAGE);
                         break;
-                    case 3: // Exit
+                    case GameConstants.MENU_INDEX_EXIT: // Exit
                         highScoreManager.updateScore(playerName, scoreManager.getScore());
-                        System.exit(0);
+                        System.exit(GameConstants.ZERO);
                         break;
                 }
             }
 
             private void showTop5Dialog () {
-                java.util.List<HighScoreManager.ScoreEntry> top = highScoreManager.getTopScores(5);
+                java.util.List<HighScoreManager.ScoreEntry> top = highScoreManager.getTopScores(GameConstants.TOP_SCORES_COUNT);
                 StringBuilder sb = new StringBuilder();
                 if (top.isEmpty()) {
                     sb.append("Chưa có dữ liệu điểm cao.");
                 } else {
                     for (int i = 0; i < top.size(); i++) {
                         HighScoreManager.ScoreEntry e = top.get(i);
-                        sb.append(String.format("%d) %s - %d", i + 1, e.name, e.score));
-                        if (i < top.size() - 1) sb.append("\n");
+                        sb.append(String.format("%d) %s - %d", i + GameConstants.ONE, e.name, e.score));
+                        if (i < top.size() - GameConstants.ONE) sb.append("\n");
                     }
                 }
                 JOptionPane.showMessageDialog(null, sb.toString(), "Top 5 Players", JOptionPane.INFORMATION_MESSAGE);
@@ -242,23 +268,23 @@ public class GameManager implements ActionListener {
 
             public void movePauseMenuUp () {
                 pauseMenuIndex--;
-                if (pauseMenuIndex < 0) pauseMenuIndex = 2;
+                if (pauseMenuIndex < GameConstants.ZERO) pauseMenuIndex = GameConstants.PAUSE_MENU_MAX_INDEX;
             }
 
             public void movePauseMenuDown () {
                 pauseMenuIndex++;
-                if (pauseMenuIndex > 2) pauseMenuIndex = 0;
+                if (pauseMenuIndex > GameConstants.PAUSE_MENU_MAX_INDEX) pauseMenuIndex = GameConstants.ZERO;
             }
 
             public void selectPauseMenuOption () {
                 switch (pauseMenuIndex) {
-                    case 0:
+                    case GameConstants.PAUSE_MENU_INDEX_RESTART:
                         reset();
                         break;
-                    case 1:
+                    case GameConstants.PAUSE_MENU_INDEX_RESUME:
                         gameState.setStatus(GameStatus.RUNNING);
                         break;
-                    case 2:
+                    case GameConstants.PAUSE_MENU_INDEX_EXIT:
                         reset();
                         gameState.setStatus(GameStatus.MENU);
                         break;
@@ -271,24 +297,24 @@ public class GameManager implements ActionListener {
 
             public void moveGameOverMenuUp () {
                 gameOverMenuIndex--;
-                if (gameOverMenuIndex < 0) gameOverMenuIndex = 1;
+                if (gameOverMenuIndex < GameConstants.ZERO) gameOverMenuIndex = GameConstants.GAME_OVER_MENU_MAX_INDEX;
             }
 
             public void moveGameOverMenuDown () {
                 gameOverMenuIndex++;
-                if (gameOverMenuIndex > 1) gameOverMenuIndex = 0;
+                if (gameOverMenuIndex > GameConstants.GAME_OVER_MENU_MAX_INDEX) gameOverMenuIndex = GameConstants.ZERO;
             }
 
             public void selectGameOverOption () {
                 switch (gameOverMenuIndex) {
-                    case 0:
+                    case GameConstants.GAME_OVER_MENU_INDEX_MAIN_MENU:
                         highScoreManager.updateScore(playerName, scoreManager.getScore());
                         reset();
                         gameState.setStatus(GameStatus.MENU);
                         break;
-                    case 1:
+                    case GameConstants.GAME_OVER_MENU_INDEX_EXIT:
                         highScoreManager.updateScore(playerName, scoreManager.getScore());
-                        System.exit(0);
+                        System.exit(GameConstants.ZERO);
                         break;
                 }
             }

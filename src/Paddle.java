@@ -9,17 +9,11 @@ import javax.imageio.ImageIO;
 public class Paddle extends MoveObject {
     private BufferedImage paddleImage;
 
-    private final int ORIGINAL_WIDTH = 100;
-    private final int MAX_WIDTH = 150;
-    private final int MIN_WIDTH = 50;
-
-
     // Constructor tự load ảnh
     public Paddle(int x, int y, int width, int height, Color color) {
         super(x, color, 0, 0, height, width, y);
         try {
-
-            this.paddleImage = ImageIO.read(new File("images/paddle.png")); // giống Ball
+            this.paddleImage = ImageIO.read(new File(GameConstants.IMAGE_PADDLE));
         } catch (IOException e) {
             System.out.println("Không thể tải ảnh paddle!");
             paddleImage = null;
@@ -38,27 +32,27 @@ public class Paddle extends MoveObject {
     @Override
     public void move(int panelWidth, int panelHeight) {
         x += dx;
-        if (x <= 0) x = 0;
+        if (x <= GameConstants.ZERO) x = GameConstants.ZERO;
         if (x >= panelWidth - width) x = panelWidth - width;
     }
 
     public void expand(){
         int oldX = x;
-        width = Math.min(width + 25, MAX_WIDTH);
-        x = oldX - (25/2);
+        width = Math.min(width + GameConstants.PADDLE_WIDTH_CHANGE, GameConstants.PADDLE_MAX_WIDTH);
+        x = oldX - (GameConstants.PADDLE_WIDTH_CHANGE / 2);
     }
 
     public void shrink(){
-        width = Math.max(width - 25, MIN_WIDTH);
+        width = Math.max(width - GameConstants.PADDLE_WIDTH_CHANGE, GameConstants.PADDLE_MIN_WIDTH);
     }
 
     public void resetWidth(){
-        width = ORIGINAL_WIDTH;
+        width = GameConstants.PADDLE_ORIGINAL_WIDTH;
     }
 
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) dx = -5;
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT) dx = 5;
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) dx = -GameConstants.PADDLE_SPEED;
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) dx = GameConstants.PADDLE_SPEED;
     }
 
     public void keyReleased(KeyEvent e) {

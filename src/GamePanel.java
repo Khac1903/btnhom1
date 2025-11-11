@@ -4,8 +4,6 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements ActionListener {
-    final int PANEL_WIDTH = 800;
-    final int PANEL_HEIGHT = 600;
 
 
     private Paddle paddle;
@@ -22,7 +20,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private HighScoreManager highScoreManager;
 
     public GamePanel() {
-        this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+        this.setPreferredSize(new Dimension(GameConstants.PANEL_WIDTH, GameConstants.PANEL_HEIGHT));
         this.setBackground(Color.BLACK);
         this.setFocusable(true);
         this.addKeyListener(new GameKeyAdapter());
@@ -38,13 +36,17 @@ public class GamePanel extends JPanel implements ActionListener {
 
 
 
-        timer = new Timer(10, this);
+        timer = new Timer(GameConstants.TIMER_DELAY, this);
         timer.start();
     }
 
     public void startGame() {
-        paddle = new Paddle(350, 500, 100, 15, Color.WHITE);
-        ball = new Ball(400, 300, 20, 2, -3, Color.YELLOW);
+        paddle = new Paddle(GameConstants.PADDLE_INITIAL_X, GameConstants.PADDLE_INITIAL_Y, 
+                           GameConstants.PADDLE_ORIGINAL_WIDTH, GameConstants.PADDLE_HEIGHT, 
+                           GameConstants.PADDLE_COLOR);
+        ball = new Ball(GameConstants.BALL_INITIAL_X, GameConstants.BALL_INITIAL_Y, 
+                       GameConstants.BALL_SIZE, GameConstants.BALL_INITIAL_DX, 
+                       GameConstants.BALL_INITIAL_DY, GameConstants.BALL_COLOR);
         powerUps.clear();
         ball.stickToPaddle(paddle);
         brickMap = new BrickMap(levelManager.getLevel());
@@ -52,9 +54,13 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void resetAfterLifeLost() {
-        paddle = new Paddle(350, 500, 100, 15, Color.WHITE);
+        paddle = new Paddle(GameConstants.PADDLE_INITIAL_X, GameConstants.PADDLE_INITIAL_Y, 
+                           GameConstants.PADDLE_ORIGINAL_WIDTH, GameConstants.PADDLE_HEIGHT, 
+                           GameConstants.PADDLE_COLOR);
         powerUps.clear();
-        ball = new Ball(400, 300, 20, 2, -3, Color.YELLOW);
+        ball = new Ball(GameConstants.BALL_INITIAL_X, GameConstants.BALL_INITIAL_Y, 
+                       GameConstants.BALL_SIZE, GameConstants.BALL_INITIAL_DX, 
+                       GameConstants.BALL_INITIAL_DY, GameConstants.BALL_COLOR);
         ball.stickToPaddle(paddle);
         gameState.setStatus(GameStatus.READY);
     }
@@ -63,7 +69,7 @@ public class GamePanel extends JPanel implements ActionListener {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        gameRenderer.render(g, gameManager, PANEL_WIDTH, PANEL_HEIGHT);
+        gameRenderer.render(g, gameManager, GameConstants.PANEL_WIDTH, GameConstants.PANEL_HEIGHT);
     }
 
     @Override
