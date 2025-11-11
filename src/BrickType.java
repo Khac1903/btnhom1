@@ -34,6 +34,7 @@ public enum BrickType {
         return image;
     }
 
+
     public Image getDamage() {
         return damage;
     }

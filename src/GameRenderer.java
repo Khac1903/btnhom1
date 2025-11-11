@@ -59,20 +59,25 @@ public class GameRenderer {
 
     private void drawGame(Graphics g, GameManager manager) {
         manager.getPaddle().draw(g);
-        manager.getBall().draw(g);
+        for(Ball ball : manager.getBalls()) {
+            ball.draw(g);
+        }
+        for(PowerUp pu : manager.getPowerUps()){
+            pu.draw(g);
+        }
         manager.getBrickMap().draw(g);
     }
 
     private void drawMenuScreen(Graphics g, int width, int height, GameManager manager) {
         g.setColor(Color.BLACK);
-		g.fillRect(0,0, width, height);
+        g.fillRect(0,0, width, height);
 
-		// Vẽ tiêu đề gần chính giữa main menu
+        // Vẽ tiêu đề gần chính giữa main menu
         g.setColor(Color.WHITE);
         g.setFont(new Font("Consolas", Font.BOLD, 48));
         String title = "ARKANOID";
         g.drawString(title, (width - g.getFontMetrics().stringWidth(title))/2, height / 4);
-        
+
         // Vẽ menu options ở trung tâm
         String[] options = {"Start Game", "Top 5 Players", "How to Game", "Exit"};
         int selected = manager.getSelectedMenuIndex();
