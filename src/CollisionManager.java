@@ -15,11 +15,14 @@ public class CollisionManager {
         return instance;
     }
 
-    public void checkCollision(Ball ball, Paddle paddle, BrickMap bMap, int panelWidth, ArrayList<PowerUp> powerUps) {
-        handleWallCollision(ball, panelWidth);
-        handlePaddleCollision(ball, paddle);
-        handleBallCollision(ball, bMap, powerUps);
-
+    public int checkCollision(ArrayList<Ball> ball, Paddle paddle, BrickMap bMap, int panelWidth, ArrayList<PowerUp> powerUps) {
+        int totalBrokenBricks = 0;
+        for(Ball b : ball) {
+            handleWallCollision(b, panelWidth);
+            handlePaddleCollision(b, paddle);
+            totalBrokenBricks += handleBallCollision(b, bMap, powerUps);
+        }
+        return totalBrokenBricks;
     }
 
     /**
@@ -134,12 +137,12 @@ public class CollisionManager {
     }
 
     // kiểm tra va chạm với cạnh cửa sổ
-    public void handleWallCollision(Ball ball, int panelWidth) {
-        if (ball.x <= 0 || ball.x >= panelWidth - ball.width) {
-            ball.dx = -ball.dx;
+    public void handleWallCollision(Ball b, int panelWidth) {
+        if (b.x <= 0 || b.x >= panelWidth - b.width) {
+            b.dx = -b.dx;
         }
-        if (ball.y <= 0) {
-            ball.dy = -ball.dy;
+        if (b.y <= 0) {
+            b.dy = -b.dy;
         }
     }
 

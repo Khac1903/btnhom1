@@ -8,12 +8,12 @@ public class Ball extends MoveObject {
     private BufferedImage image;
 
     public Ball(int x, int y, int size, int dx, int dy, Color color, BufferedImage image) {
-        super(x, color, dy, dx, size, size, y);
+        super(x, color, dx, dy, size, size, y);
         this.image = image;
     }
 
     public Ball(int x, int y, int size, int dx, int dy, Color color) {
-        super(x, color, dy, dx, size, size, y);
+        super(x, color, dx, dy, size, size, y);
         try {
             this.image = ImageIO.read(new File("images/ball.png")); // đổi đường dẫn nếu cần
         } catch (IOException e) {
@@ -50,7 +50,7 @@ public class Ball extends MoveObject {
         Rectangle ballRect = this.getBound();
         Rectangle paddleRect = paddle.getBound();
         if (ballRect.intersects(paddleRect) && dy > 0) {
-			SoundManager.playSound("src/sounds/ball_hit_paddle.wav");
+            SoundManager.playSound("src/sounds/ball_hit_paddle.wav");
 
             double paddleCenter = paddle.x + paddle.width / 2.0;
             double ballCenter = x + width / 2.0;
@@ -106,10 +106,10 @@ public class Ball extends MoveObject {
 
     public void draw(Graphics g) {
         if (image != null) {
-            g.drawImage(image, x, y, width, height, null);
+            g.drawImage(image, (int)x, (int)y, width, height, null);
         } else {
             g.setColor(Color.RED);
-            g.fillOval(x, y, width, height);
+            g.fillOval((int) x , (int) y, width, height);
         }
     }
 }

@@ -1,7 +1,6 @@
 import  javax.swing.JFrame;
 import java.awt.*;
-public class
-Arkanoid extends JFrame {
+public class Arkanoid extends JFrame {
     public Arkanoid(){
         setTitle("Arkanoid Game");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
