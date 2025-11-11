@@ -1,12 +1,32 @@
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class GameRenderer {
     private static final Font MENU_FONT = new Font("Arial", Font.BOLD, 30);
     private static final Font GAME_OVER_FONT = new Font("Ink Free", Font.BOLD, 75);
-
+    private BufferedImage backgroundImage;
+    public GameRenderer(){
+        try {
+            backgroundImage = ImageIO.read(new File("images/back_ground_game.jpg"));
+        } catch (IOException e) {
+            System.err.println("Khong the in anh background");
+            e.printStackTrace();
+            backgroundImage = null;
+        }
+    }
     public void render(Graphics g, GameManager manager, int width, int height) {
         GameState state = manager.getGameState();
-
+        if (state.isReady() || state.isRunning() || state.isPaused() || state.isGameOver()) {
+            if (backgroundImage != null) {
+                g.drawImage(backgroundImage, 0, 0, width, height, null);
+            } else {
+                g.setColor(Color.BLACK);
+                g.fillRect(0, 0, width, height);
+            }
+        }
         switch (state.getStatus()) {
             case MENU:
                 drawMenuScreen(g, width, height, manager);
