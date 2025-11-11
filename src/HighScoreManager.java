@@ -45,6 +45,7 @@ public class HighScoreManager {
             saveScores();
         }
     }
+<<<<<<< HEAD
 
     public static class ScoreEntry {
         public String name;
@@ -83,3 +84,6 @@ public class HighScoreManager {
         return topScores.get(0).score;
     }
 }
+=======
+}
+>>>>>>> 84b6e8bb8aa00db7e58033b658bf4532aea774f7

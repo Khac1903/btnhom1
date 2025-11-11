@@ -5,13 +5,51 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5bec9d55-9017-45d9-b9cf-981164d850f9" name="Changes" comment="Khac commit">
+      <change afterPath="$PROJECT_DIR$/images/02-Breakout-Tiles.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/06-Breakout-Tiles.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/08-Breakout-Tiles.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/11-Breakout-Tiles.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/12-Breakout-Tiles.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/13-Breakout-Tiles.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/14-Breakout-Tiles.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/ai-generated-a-mystical-forest-blanketed-in-morning-mist-and-dappled-sunlight-seamless-looping-4k-time-lapse-virtual-animation-background-video.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/arkanoid.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/background.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/ball.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/ball1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/ball2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/c.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/durable.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/durable_damage.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/indestructible.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/monitor-1055961_1280.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/sdv.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/images/sf.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/CollisionManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/ball.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/ball.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/durable.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/explore.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/explore.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/indestructible.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/images/backgroun.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/normal.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/normal.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/paddle.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/paddle.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Arkanoid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Arkanoid.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Ball.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Ball.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/BrickMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BrickMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/BrickType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BrickType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Bricks.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Bricks.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GamePanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GameRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameRenderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GameState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GameStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameStatus.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/HighScoreManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/HighScoreManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/LevelManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/LevelManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MoveObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MoveObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Paddle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Paddle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PowerUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PowerUp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ScoreManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ScoreManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +98,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "Merging main",
     "ignore.virus.scanning.warn.message": "true",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
@@ -138,7 +176,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Paddle.java</url>
-          <line>22</line>
+          <line>17</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>

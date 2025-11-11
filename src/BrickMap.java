@@ -3,9 +3,11 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class BrickMap {
-    public Bricks[][] map;
-    private int totalBricks;
-    private Random rand;
+    public Bricks[][] map; // mảng 2 chiều chứa các viên gạch
+    public int totalBricks; // số viên gạch cần phá để qua màn
+    public Random rand;
+
+
 
     public BrickMap(int level) {
         rand = new Random();
@@ -24,8 +26,10 @@ public class BrickMap {
         int explore_chance = 5;
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
+
                 int brickX = j * brickWidth + 50;
                 int brickY = i * brickHeight + 50;
+
                 if (level == 1) {
                     type = BrickType.NORMAL;
                 } else if (level == 2) {
@@ -34,29 +38,28 @@ public class BrickMap {
                     } else if (i == 2) {
                         type = BrickType.DURABLE;
                     }
-                } else if(level == 3)   {
+                } else if (level == 3) {
                     if (i == 0 || i == rows - 1 || j == 0 || j == cols - 1) type = BrickType.DURABLE;
                     else if ((i == 2 && j == 2) || (i == 2 && j == cols - 3)) type = BrickType.EXPLORE;
                     else if (i == 2 || j == 4) type = BrickType.INDESTRUCTIBLE;
+                } else{
+                int roll = rand.nextInt(100);
+                if (roll < durable_chance) {
+                    type = BrickType.DURABLE;
+                } else if (roll < durable_chance + explore_chance) {
+                    type = BrickType.EXPLORE;
+                } else if (level > 1 && (i % 2 == 0) && (j % 3 == 0) && roll < durable_chance + explore_chance + indestructible_chance) {
+                    type = BrickType.INDESTRUCTIBLE;
                 } else {
-                    int roll = rand.nextInt(100);
-                    if(roll < durable_chance ){
-                        type = BrickType.DURABLE;
-                    }else if(roll < durable_chance + explore_chance){
-                        type = BrickType.EXPLORE;
-                    } else if (level> 1 && (i%2 == 0) && (j%3 == 0) && roll < durable_chance + explore_chance + indestructible_chance ){
-                        type = BrickType.INDESTRUCTIBLE;
-                    } else {
-                        type = BrickType.NORMAL;
-                    }
-                }
-                if (type == BrickType.EXPLORE && i == map.length - 1) {
                     type = BrickType.NORMAL;
                 }
-                if (type == BrickType.INDESTRUCTIBLE && i == map.length - 1) {
-                    type = BrickType.NORMAL;
-                }
-
+            }
+            if (type == BrickType.EXPLORE && i == map.length - 1) {
+                type = BrickType.NORMAL;
+            }
+            if (type == BrickType.INDESTRUCTIBLE && i == map.length - 1) {
+                type = BrickType.NORMAL;
+            }
 
                 map[i][j] = new Bricks(brickX,brickY,brickWidth,brickHeight,type);
                 if(map[i][j].getType() != BrickType.INDESTRUCTIBLE){
@@ -73,6 +76,7 @@ public class BrickMap {
             }
         }
     }
+<<<<<<< HEAD
     
     public int handleBallCollision(Ball ball) {
         return handleBallCollision(ball, new ArrayList<PowerUp>());
@@ -153,6 +157,8 @@ public class BrickMap {
             powerUps.add(new PowerUp(x, y, randomType));
         }
     }
+=======
+>>>>>>> 84b6e8bb8aa00db7e58033b658bf4532aea774f7
 
     public void breakBrick() {
         totalBricks--;

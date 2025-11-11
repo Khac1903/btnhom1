@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 
 public class GameManager implements ActionListener {
     private Paddle paddle;
@@ -17,16 +18,17 @@ public class GameManager implements ActionListener {
     private int selectedMenuIndex = 0;
     private int pauseMenuIndex = 0;
     private int gameOverMenuIndex = 0;
+    private  ArrayList<PowerUp> powerUps;
 
-    public GameManager() {
-        gameState = new GameState();
-        gameState.setStatus(GameStatus.MENU); // 👈 bắt đầu ở menu
 
+    public GameManager(GameState sharedState) {
+        this.gameState = sharedState;
+        gameState.setStatus(GameStatus.MENU);
         resetGameObjects();
-        gameState = new GameState();
         scoreManager = new ScoreManager();
         levelManager = new LevelManager();
         playerManager = new PlayerManager();
+<<<<<<< HEAD
         highScoreManager = new HighScoreManager();
         
         // Yêu cầu tên người chơi khi vào menu lần đầu
@@ -47,7 +49,11 @@ public class GameManager implements ActionListener {
         }
         // Cập nhật high score cho người chơi
         playerManager.setPlayerInfo(playerName, highScoreManager.getHighScore(playerName));
+=======
+        powerUps = new ArrayList<>();
+>>>>>>> 84b6e8bb8aa00db7e58033b658bf4532aea774f7
     }
+
 
     private void resetGameObjects() {
         ball = new Ball(390, 450, 20, 20, 4, Color.RED);
@@ -76,8 +82,8 @@ public class GameManager implements ActionListener {
                 ball.stickToPaddle(paddle);
             } else if (gameState.isRunning()) {
                 ball.updatePosition();
-                ball.handleWallCollision(width);
-                ball.handlePaddleCollision(paddle);
+                CollisionManager.getInstance().checkCollision(ball, paddle, brickMap, width, powerUps);
+
 
                 if (ball.isOutOfBounds(height)) {
                     playerManager.loseLife();
@@ -94,7 +100,7 @@ public class GameManager implements ActionListener {
                     }
                 }
 
-                int broken = brickMap.handleBallCollision(ball);
+                int broken = CollisionManager.getInstance().handleBallCollision(ball, brickMap, powerUps);
                 if (broken > 0) scoreManager.increaseScore();
 
                 if (brickMap.isLevelComplete()) {
@@ -119,8 +125,12 @@ public class GameManager implements ActionListener {
     public ScoreManager getScoreManager() { return scoreManager; }
     public LevelManager getLevelManager() { return levelManager; }
     public PlayerManager getPlayerManager() { return playerManager; }
+<<<<<<< HEAD
     public HighScoreManager getHighScoreManager() { return highScoreManager; }
     public String getPlayerName() { return playerName; }
+=======
+
+>>>>>>> 84b6e8bb8aa00db7e58033b658bf4532aea774f7
     public int getSelectedMenuIndex() {
         return selectedMenuIndex;
     }

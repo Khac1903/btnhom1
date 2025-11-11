@@ -12,10 +12,11 @@ public class Ball extends MoveObject {
         this.image = image;
     }
 
+    // Constructor phụ: tự load ảnh nếu không truyền vào
     public Ball(int x, int y, int size, int dx, int dy, Color color) {
         super(x, color, dy, dx, size, size, y);
         try {
-            this.image = ImageIO.read(new File("images/ball.png")); // đổi đường dẫn nếu cần
+            this.image = ImageIO.read(new File("images/c.png")); // đổi đường dẫn nếu cần
         } catch (IOException e) {
             System.out.println("Không thể tải ảnh bóng!");
             e.printStackTrace();
@@ -23,6 +24,7 @@ public class Ball extends MoveObject {
         }
     }
 
+<<<<<<< HEAD
 
     public double getDx() {
         return dx;
@@ -32,11 +34,17 @@ public class Ball extends MoveObject {
         return dy;
     }
 
+=======
+    /**
+     * cap nhat vi tri.
+     */
+>>>>>>> 84b6e8bb8aa00db7e58033b658bf4532aea774f7
     public void updatePosition() {
         x += dx;
         y += dy;
     }
 
+<<<<<<< HEAD
     public void handleWallCollision(int panelWidth) {
         if (x <= 0 || x >= panelWidth - width) {
             dx = -dx;
@@ -76,6 +84,8 @@ public class Ball extends MoveObject {
         }
     }
 
+=======
+>>>>>>> 84b6e8bb8aa00db7e58033b658bf4532aea774f7
     public void reverseY() {
         dy = -dy;
     }
@@ -98,12 +108,17 @@ public class Ball extends MoveObject {
         this.dy = -3;
     }
 
+<<<<<<< HEAD
     public void changeSpeed(double multiplier) {
+=======
+    public void changeSpeed(double multiplier){
+>>>>>>> 84b6e8bb8aa00db7e58033b658bf4532aea774f7
         dy *= multiplier;
         dx *= multiplier;
     }
 
 
+    // 🎨 Vẽ bóng (ảnh nếu có, không thì vẽ hình tròn)
     public void draw(Graphics g) {
         if (image != null) {
             g.drawImage(image, x, y, width, height, null);
@@ -112,4 +127,8 @@ public class Ball extends MoveObject {
             g.fillOval(x, y, width, height);
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 84b6e8bb8aa00db7e58033b658bf4532aea774f7
