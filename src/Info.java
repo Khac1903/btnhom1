@@ -42,7 +42,7 @@ public class Info {
     }
 
     public void reset(){
-        level = 1;
+        level = 3;
         score = 0;
         lives = 3;
     }

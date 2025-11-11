@@ -15,8 +15,8 @@ public class CollisionManager {
         return instance;
     }
 
-    public void checkCollision(Ball ball, Paddle paddle, BrickMap bMap, int panelWidth, ArrayList<PowerUp> powerUps) {
-        handleWallCollision(ball, panelWidth);
+    public void checkCollision(Ball ball, Paddle paddle, BrickMap bMap, int panelWidth, int panelHeight, ArrayList<PowerUp> powerUps) {
+        handleWallCollision(ball, panelWidth, panelHeight);
         handlePaddleCollision(ball, paddle);
         handleBallCollision(ball, bMap, powerUps);
 
@@ -30,7 +30,7 @@ public class CollisionManager {
         Rectangle ballRect = ball.getBound();
         Rectangle paddleRect = paddle.getBound();
         if (ballRect.intersects(paddleRect) && ball.dy > 0) {
-            SoundManager.playSound("src/sounds/ball_hit_paddle.wav");
+
 
             double paddleCenter = paddle.x + paddle.width / 2.0;
             double ballCenter = ball.x + ball.width / 2.0;
@@ -64,44 +64,60 @@ public class CollisionManager {
      */
     public int handleBallCollision(Ball ball, BrickMap brickMap, ArrayList<PowerUp> powerUps) {
         int brokenBricks = 0;
+
+        Rectangle ballRect = ball.getBound();
+
         for (int i = 0; i < brickMap.map.length; i++) {
             for (int j = 0; j < brickMap.map[i].length; j++) {
                 Bricks brick = brickMap.map[i][j];
-                if (brick.isVisible() && ball.getBound().intersects(brick.getBounds())) {
-                    Rectangle ballRect = ball.getBound();
+                if (brick.isVisible() && ballRect.intersects(brick.getBounds())) {
+
                     Rectangle brickRect = brick.getBounds();
+
                     boolean hitFromLeft   = ballRect.x + ballRect.width - ball.dx <= brickRect.x;
                     boolean hitFromRight  = ballRect.x - ball.dx >= brickRect.x + brickRect.width;
                     boolean hitFromTop    = ballRect.y + ballRect.height - ball.dy <= brickRect.y;
                     boolean hitFromBottom = ballRect.y - ball.dy >= brickRect.y + brickRect.height;
 
-                    if (hitFromLeft || hitFromRight) {
+                    // 🔹 Xử lý hướng bật
+                    if (hitFromLeft) {
                         ball.reverseX();
-                    } else if (hitFromTop || hitFromBottom) {
+                        ball.setX(brickRect.x - ballRect.width - 1);
+                    } else if (hitFromRight) {
+                        ball.reverseX();
+                        ball.setX(brickRect.x + brickRect.width + 1);
+                    } else if (hitFromTop) {
                         ball.reverseY();
+                        ball.setY(brickRect.y - ballRect.height - 1);
+                    } else if (hitFromBottom) {
+                        ball.reverseY();
+                        ball.setY(brickRect.y + brickRect.height + 1);
                     } else {
-                        ball.reverseY();
+                        ball.reverseY(); // fallback
                     }
+
+                    boolean broken = false;
+
+                    // 🔹 Sau khi xử lý vật lý thì xử lý loại gạch
                     if (brick.getType() == BrickType.EXPLORE) {
-                        // 2️⃣ Sau đó xử lý loại gạch
                         brick.setVisible(false);
                         brokenBricks++;
                         brickMap.totalBricks--;
                         brokenBricks += explore(i, j, brickMap, powerUps);
                         spawnPowerUp(brick.x, brick.y, brickMap, powerUps);
-                        SoundManager.playSound("src/sounds/explore.wav");
-                    } else if (brick.getType() == BrickType.INDESTRUCTIBLE) {
-                        SoundManager.playSound("src/sounds/indestructible.wav");
-
                     } else {
-                        SoundManager.playSound("src/sounds/ball_hit_brick.wav");
-                        if (brick.hit()) {
+                        broken = brick.hit();
 
+                        SoundManager.playSoundAsync("ball_hit");
+
+                        if (broken) {
                             brokenBricks++;
                             brickMap.totalBricks--;
                             spawnPowerUp(brick.x, brick.y, brickMap, powerUps);
                         }
                     }
+
+                    // 🔹 Chỉ cần xử lý va chạm 1 gạch mỗi frame là đủ
                     return brokenBricks;
                 }
             }
@@ -109,13 +125,14 @@ public class CollisionManager {
         return brokenBricks;
     }
 
+
     private int explore(int row, int col, BrickMap brickMap, ArrayList<PowerUp> powerUps){
         int extraBroken = 0;
         for (int i = row - 1; i <= row + 1; i++) {
             for (int j = col - 1; j <= col + 1; j++) {
                 if (i >= 0 && i < brickMap.map.length && j >= 0 && j < brickMap.map[0].length) {
                     Bricks neighbor = brickMap.map[i][j];
-                    if (neighbor.isVisible() && neighbor.getType() != BrickType.INDESTRUCTIBLE) {
+                    if (neighbor.isVisible() ) {
                         neighbor.setVisible(false);
                         extraBroken++;
                         brickMap.totalBricks--;
@@ -133,14 +150,32 @@ public class CollisionManager {
         }
     }
 
-    // kiểm tra va chạm với cạnh cửa sổ
-    public void handleWallCollision(Ball ball, int panelWidth) {
-        if (ball.x <= 0 || ball.x >= panelWidth - ball.width) {
-            ball.dx = -ball.dx;
+    public boolean handleWallCollision(Ball ball, int panelWidth, int panelHeight) {
+        // Cạnh trái
+        if (ball.x <= 0) {
+            ball.reverseX();
+            ball.x = 0;
         }
+        // Cạnh phải
+        else if (ball.x >= panelWidth - ball.width) {
+            ball.reverseX();
+            ball.x = panelWidth - ball.width;
+        }
+
+        // Cạnh trên
         if (ball.y <= 0) {
-            ball.dy = -ball.dy;
+            ball.reverseY();
+            ball.y = 0;
         }
+
+        // Cạnh dưới (rơi ra khỏi màn hình)
+        if (ball.y >= panelHeight - ball.height) {
+            return true; // 🔹 báo cho GameManager biết là bóng rơi ra ngoài
+        }
+
+        return false; // 🔹 chưa rơi
     }
+
+
 
 }

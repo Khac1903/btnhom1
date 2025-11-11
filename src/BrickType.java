@@ -1,33 +1,36 @@
 
-import java.awt.*;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
-import java.io.File;
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import java.awt.*;
+import java.io.File;
+
 public enum BrickType {
-    NORMAL("images/normal.png"),
-    INDESTRUCTIBLE("images/indestructible.png"),
-    DURABLE("images/durable.png","images/durable_damage.png"),
-    EXPLORE("images/explore.png");
+    NORMAL("images/normal.png", "images/normal_damage.png", 2),
+    DURABLE("images/durable.png", "images/durable_damage.png", 4),
+    INDESTRUCTIBLE("images/indestructible.png", "images/indestructible.png", 8),
+    EXPLORE("images/explore.png", "images/explore_damage.png", 6);
 
     private Image image;
     private Image damage;
+    private int baseHealth; // 🔹 thêm để biết “độ bền gốc” của loại này
 
-    BrickType(String path) {
-        this(path, null);
-    }
-
-    BrickType(String path, String damagePath) {
+    // Constructor chính
+    BrickType(String path, String damagePath, int baseHealth) {
+        this.baseHealth = baseHealth;
         try {
             image = ImageIO.read(new File(path));
             if (damagePath != null) {
                 damage = ImageIO.read(new File(damagePath));
             }
         } catch (Exception e) {
-            System.out.println("Lỗi không tải được ảnh " + path);
+            System.out.println(" Lỗi không tải được ảnh " + path);
             image = null;
+            damage = null;
         }
+    }
+
+    // Constructor phụ nếu không có ảnh nứt
+    BrickType(String path, int baseHealth) {
+        this(path, null, baseHealth);
     }
 
     public Image getImage() {
@@ -36,5 +39,9 @@ public enum BrickType {
 
     public Image getDamage() {
         return damage;
+    }
+
+    public int getBaseHealth() {
+        return baseHealth;
     }
 }

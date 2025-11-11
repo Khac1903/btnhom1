@@ -6,12 +6,15 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GamePanel extends JPanel implements ActionListener {
     final int PANEL_WIDTH = 800;
     final int PANEL_HEIGHT = 600;
 
 
+    private Map<PowerUpType, Integer> powerUpTimers = new HashMap<>();
     Paddle paddle;
     Ball ball;
     BrickMap brickMap;
@@ -19,8 +22,8 @@ public class GamePanel extends JPanel implements ActionListener {
     GameState gameState;
     ScoreManager scoreManager;
     LevelManager levelManager;
-     GameManager gameManager;
-     GameRenderer gameRenderer;
+    GameManager gameManager;
+    GameRenderer gameRenderer;
     ArrayList<PowerUp> powerUps;
     Info info;
     HighScoreManager highScoreManager;
@@ -32,6 +35,8 @@ public class GamePanel extends JPanel implements ActionListener {
         this.setFocusable(true);
         this.addKeyListener(new GameKeyAdapter());
 
+        powerUps = new ArrayList<>();
+        powerUpTimers = new HashMap<>();
         highScoreManager = new HighScoreManager();
         gameState = new GameState();
         scoreManager = new ScoreManager();
@@ -40,10 +45,17 @@ public class GamePanel extends JPanel implements ActionListener {
         gameRenderer = new GameRenderer();
         info = new Info();
         askPlayerName();
+        initGame();
 
 
         timer = new Timer(10, this);
         timer.start();
+    }
+
+    private void initGame() {
+
+        paddle = new Paddle(300, 450, 100, 20, Color.BLUE);
+        ball = new Ball(350, 400, 15, 2, -3, Color.RED);
     }
 
     private void askPlayerName() {
@@ -69,6 +81,29 @@ public class GamePanel extends JPanel implements ActionListener {
         gameState.isReady();
     }
 
+    private void updateGame() {
+        ball.updatePosition();
+        paddle.move(getWidth(), getHeight());
+
+        // 👉 Đặt vòng for xử lý PowerUp ở đây:
+        for (int i = powerUps.size() - 1; i >= 0; i--) {
+            PowerUp p = powerUps.get(i);
+            p.move(); // cho rơi xuống
+
+            // Nếu rơi khỏi màn hình -> xoá
+            if (p.isOffScreen(getHeight())) {
+                powerUps.remove(i);
+                continue;
+            }
+
+            // Nếu nhặt được
+            if (p.getBounds().intersects(paddle.getBounds())) {
+                applyPowerUp(p.getType()); // kích hoạt hiệu ứng
+                powerUps.remove(i);
+            }
+        }
+    }
+
     public void resetAfterLifeLost() {
         paddle = new Paddle(350, 500, 100, 15, Color.WHITE);
         powerUps.clear();
@@ -84,7 +119,7 @@ public class GamePanel extends JPanel implements ActionListener {
 //        brickMap = new BrickMap(levelManager.getLevel());
 //    }
 
-    private void drawGameOver(Graphics g){
+    private void drawGameOver(Graphics g) {
         g.setColor(Color.red);
         g.setFont(new Font("Ink Free", Font.BOLD, 75));
         FontMetrics metrics = getFontMetrics(g.getFont());
@@ -116,6 +151,9 @@ public class GamePanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        updatePowerUps();
+        updateGame();
+        repaint();
         gameManager.update(getWidth(), getHeight());
         repaint();
     }
@@ -205,4 +243,61 @@ public class GamePanel extends JPanel implements ActionListener {
         public void keyTyped(KeyEvent e) {
         }
     }
+
+    private void applyPowerUp(PowerUpType type) {
+        int extraTime = 5 * 60; // ví dụ 5 giây * 60 FPS = 300 đơn vị
+        int newTime = powerUpTimers.getOrDefault(type, 0) + extraTime;
+        powerUpTimers.put(type, newTime);
+
+        if (type == PowerUpType.PADDLE_WIDE || type == PowerUpType.PADDLE_NARROW)
+            paddle.applyPowerUp(type);
+        else
+            ball.applyPowerUp(type);
+    }
+
+
+    private void deactivateEffect(PowerUpType type) {
+        switch (type) {
+            case PADDLE_WIDE:
+            case PADDLE_NARROW:
+                paddle.removePowerUp(type);
+                break;
+            case BALL_FAST:
+            case MULTI_BALL:
+                ball.removePowerUp(type);
+                break;
+        }
+    }
+
+    // Giả sử gọi mỗi frame (~16ms)
+    private void updatePowerUps() {
+        // Lặp ngược để vừa cập nhật vừa xóa khỏi ArrayList
+        for (int i = powerUps.size() - 1; i >= 0; i--) {
+            PowerUp p = powerUps.get(i);
+
+            // Di chuyển PowerUp xuống
+            p.move();
+
+            // Nếu PowerUp ra khỏi màn hình, xóa khỏi danh sách
+            if (p.isOffScreen(getHeight()) || !p.isVisible()) {
+                powerUps.remove(i);
+                continue;
+            }
+
+            // Nếu PowerUp đang active (đang có thời gian còn lại)
+            PowerUpType type = p.getType();
+            if (powerUpTimers.containsKey(type)) {
+                int timeLeft = powerUpTimers.get(type) - 1; // giảm 1 đơn vị
+                if (timeLeft <= 0) {
+                    // Hết thời gian → remove effect và khỏi map
+                    powerUpTimers.remove(type);
+                    deactivateEffect(type); // Ball/Paddle reset
+                } else {
+                    powerUpTimers.put(type, timeLeft);
+                }
+            }
+        }
+    }
+
+
 }

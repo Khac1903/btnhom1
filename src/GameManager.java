@@ -19,6 +19,8 @@ public class GameManager implements ActionListener {
     private  ArrayList<PowerUp> powerUps;
 
 
+
+
     public GameManager(GameState sharedState) {
         this.gameState = sharedState;
         gameState.setStatus(GameStatus.MENU);
@@ -27,6 +29,11 @@ public class GameManager implements ActionListener {
         levelManager = new LevelManager();
         playerManager = new PlayerManager();
         powerUps = new ArrayList<>();
+
+        // 🔹 Preload âm thanh
+        SoundManager.loadSound("gameover", "src/sounds/gameover.wav");
+        SoundManager.loadSound("loselife", "src/sounds/loselives.wav");
+        SoundManager.loadSound("ball_hit", "src/sounds/ball_hit_brick.wav");
     }
 
 
@@ -57,16 +64,16 @@ public class GameManager implements ActionListener {
                 ball.stickToPaddle(paddle);
             } else if (gameState.isRunning()) {
                 ball.updatePosition();
-                CollisionManager.getInstance().checkCollision(ball, paddle, brickMap, width, powerUps);
+                CollisionManager.getInstance().checkCollision(ball, paddle, brickMap, width, height, powerUps);
 
 
                 if (ball.isOutOfBounds(height)) {
                     playerManager.loseLife();
                     if (playerManager.isOutOfLives()) {
-                        SoundManager.playSound("src/sounds/gameover.wav");
+                        SoundManager.playSoundAsync("gameover");
                         gameState.setStatus(GameStatus.GAME_OVER);
                     } else {
-                        SoundManager.playSound("src/sounds/loselives.wav");
+                        SoundManager.playSoundAsync("loselife");
                         ball = new Ball(400, 300, 20, 2, -3, Color.YELLOW);
                         ball.stickToPaddle(paddle);
                         gameState.setStatus(GameStatus.READY);

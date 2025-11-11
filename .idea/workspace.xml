@@ -4,26 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5bec9d55-9017-45d9-b9cf-981164d850f9" name="Changes" comment="design patter sigleton cho va chạm giữa các đối tượng">
+    <list default="true" id="5bec9d55-9017-45d9-b9cf-981164d850f9" name="Changes" comment="Merge branch 'main' of https://github.com/Khac1903/btnhom1&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;images/ball.png&#10;#&#9;images/paddle.png&#10;#&#9;src/Ball.java&#10;#&#9;src/BrickMap.java&#10;#&#9;src/BrickType.java&#10;#&#9;src/GameManager.java&#10;#&#9;src/GamePanel.java&#10;#&#9;src/GameRenderer.java&#10;#&#9;src/Info.java&#10;#&#9;src/Paddle.java">
+      <change afterPath="$PROJECT_DIR$/src/SoundThread.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Arkanoid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Arkanoid.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/02-Breakout-Tiles.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/08-Breakout-Tiles.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/11-Breakout-Tiles.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/12-Breakout-Tiles.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/ball.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/ball.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/ball1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/ball2.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/ball2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/normal.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/normal.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Ball.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Ball.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BrickMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BrickMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/BrickType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BrickType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Bricks.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Bricks.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/CollisionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CollisionManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GameManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GamePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GamePanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GameRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameRenderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GameState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GameStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameStatus.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/LinkedList.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Paddle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Paddle.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/PowerUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/PowerUp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Solution.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Student.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/StudentManagement.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Week4.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/SoundManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SoundManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +72,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Merging main&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/PC/IdeaProjects/10&quot;,
     &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/PC/IdeaProjects/10/src/Main.java&quot;,
@@ -155,7 +155,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Bricks.java</url>
-          <line>24</line>
+          <line>18</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
