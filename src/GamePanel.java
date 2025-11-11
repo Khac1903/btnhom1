@@ -8,24 +8,22 @@ public class GamePanel extends JPanel implements ActionListener {
     final int PANEL_HEIGHT = 600;
 
 
-    Paddle paddle;
-    Ball ball;
-    Timer timer;
-    GameState gameState;
-    BrickMap brickMap;
-    ScoreManager scoreManager;
-    LevelManager levelManager;
-    ArrayList<PowerUp> powerUps;
-    Info info;
-    HighScoreManager highScoreManager;
+    private Paddle paddle;
+    private Ball ball;
+    private BrickMap brickMap;
+    private Timer timer;
+    private GameState gameState;
+    private ScoreManager scoreManager;
+    private LevelManager levelManager;
+    private GameManager gameManager;
+    private GameRenderer gameRenderer;
+    private ArrayList<PowerUp> powerUps;
+    private Info info;
+    private HighScoreManager highScoreManager;
 
     public GamePanel() {
-        setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-        setBackground(Color.BLACK);
-        setFocusable(true);
-        addKeyListener(new GameKeyAdapter());
-
-
+        this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+        this.setBackground(Color.BLACK);
         this.setFocusable(true);
         this.addKeyListener(new GameKeyAdapter());
 
@@ -33,7 +31,10 @@ public class GamePanel extends JPanel implements ActionListener {
         gameState = new GameState();
         scoreManager = new ScoreManager();
         levelManager = new LevelManager();
+        gameManager = new GameManager(gameState);
+        gameRenderer = new GameRenderer();
         info = new Info();
+        powerUps = new ArrayList<>();
 
         askPlayerName();
 
@@ -41,7 +42,6 @@ public class GamePanel extends JPanel implements ActionListener {
         timer = new Timer(10, this);
         timer.start();
     }
-
 
     private void askPlayerName() {
         String name = JOptionPane.showInputDialog(
@@ -63,7 +63,7 @@ public class GamePanel extends JPanel implements ActionListener {
         powerUps.clear();
         ball.stickToPaddle(paddle);
         brickMap = new BrickMap(levelManager.getLevel());
-        gameState.isReady();
+        gameState.setStatus(GameStatus.READY);
     }
 
     public void resetAfterLifeLost() {
@@ -71,81 +71,21 @@ public class GamePanel extends JPanel implements ActionListener {
         powerUps.clear();
         ball = new Ball(400, 300, 20, 2, -3, Color.YELLOW);
         ball.stickToPaddle(paddle);
-        gameState.isReady();
+        gameState.setStatus(GameStatus.READY);
     }
 
-    private void drawGameOver(Graphics g) {
-        g.setColor(Color.red);
-        g.setFont(new Font("Ink Free", Font.BOLD, 75));
-        FontMetrics metrics = getFontMetrics(g.getFont());
-        g.drawString("Game Over", (PANEL_WIDTH - metrics.stringWidth("Game Over")) / 2, PANEL_HEIGHT / 2);
-    }
-
-    private void drawStartScreen(Graphics g) {
-        g.setColor(Color.WHITE);
-        g.setFont(new Font("Arial", Font.BOLD, 30));
-        FontMetrics metrics = getFontMetrics(g.getFont());
-        String startMessage = "Nhấn Enter để bắt đầu";
-        g.drawString(startMessage, (PANEL_WIDTH - metrics.stringWidth(startMessage)) / 2, PANEL_HEIGHT / 2);
-    }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        switch (gameState.getStatus()) {
-            case MENU:
-                drawStartScreen(g);
-                break;
-            case READY:
-            case RUNNING:
-                paddle.draw(g);
-                ball.draw(g);
-                brickMap.draw(g);
-                break;
-            case GAME_OVER:
-                drawGameOver(g);
-                break;
-        }
-        scoreManager.draw(g);
-        levelManager.draw(g);
+        gameRenderer.render(g, gameManager, PANEL_WIDTH, PANEL_HEIGHT);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        if (gameState.isRunning() || gameState.isReady()) {
-            //int brickDefault = brickMap.getTotalBricks();
-            paddle.move(this.getWidth(), this.getHeight());
-            if (gameState.isReady()) {
-                ball.stickToPaddle(paddle);
-            } else if (gameState.isRunning()) {
-                ball.updatePosition();
-                ball.handleWallCollision(this.getWidth());
-                ball.handlePaddleCollision(paddle);
-                if (ball.isOutOfBounds(this.getHeight())) {
-                    info.loseLife();
-                    if (info.hasLive()) {
-                        resetAfterLifeLost();
-                    } else {
-                        highScoreManager.updateScore(info.getPlayerName(), scoreManager.getScore());
-                        info.setHighScore(highScoreManager.getHighScore(info.getPlayerName()));
-                        gameState.setStatus(GameStatus.GAME_OVER);
-                    }
-                }
-                int brokenBricks = brickMap.handleBallCollision(ball, powerUps);
-
-                if (brokenBricks > 0) {
-                    scoreManager.increaseScore();
-                }
-                if (brickMap.isLevelComplete()) {
-                    levelManager.nextLevel();
-                    startGame();
-                    gameState.setStatus(GameStatus.READY);
-                }
-            }
-            repaint();
-        }
+        gameManager.update(getWidth(), getHeight());
+        repaint();
     }
 
     private class GameKeyAdapter extends KeyAdapter {
@@ -153,23 +93,68 @@ public class GamePanel extends JPanel implements ActionListener {
         public void keyPressed(KeyEvent e) {
 
             int keyCode = e.getKeyCode();
-            if (keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT) {
-                if (gameState.isReady() || gameState.isRunning()) {
-                    paddle.keyPressed(e);
+
+            // ----- MENU CHÍNH -----
+            if (gameState.isMenu()) {
+                if (keyCode == KeyEvent.VK_UP) {
+                    gameManager.moveMenuSelectionUp();
+                } else if (keyCode == KeyEvent.VK_DOWN) {
+                    gameManager.moveMenuSelectionDown();
+                } else if (keyCode == KeyEvent.VK_ENTER) {
+                    gameManager.selectMenuOption();
                 }
-                return; // không xử lý phím khác khi đang ở menu
+                return;
             }
-            if (keyCode == KeyEvent.VK_UP) {
-                if (gameState.isReady()) {
-                    ball.launch();
-                    gameState.setStatus(GameStatus.RUNNING);
+
+
+            // ----- MENU TẠM DỪNG -----
+            if (gameState.isPaused()) {
+                if (keyCode == KeyEvent.VK_UP) {
+                    gameManager.movePauseMenuUp();
+                } else if (keyCode == KeyEvent.VK_DOWN) {
+                    gameManager.movePauseMenuDown();
+                } else if (keyCode == KeyEvent.VK_ENTER) {
+                    gameManager.selectPauseMenuOption();
                 }
+                return;
             }
-            if (keyCode == KeyEvent.VK_ENTER) {
-                if (gameState.isMenu() || gameState.isGameOver()) {
-                    if (gameState.isGameOver()) {
-                        info.reset();
+
+            // ----- MENU GAME OVER -----
+            if (gameState.isGameOver()) {
+                if (keyCode == KeyEvent.VK_UP) {
+                    gameManager.moveGameOverMenuUp();
+                } else if (keyCode == KeyEvent.VK_DOWN) {
+                    gameManager.moveGameOverMenuDown();
+                } else if (keyCode == KeyEvent.VK_ENTER) {
+                    gameManager.selectGameOverOption();
+                }
+                return;
+            }
+
+            // ----- TRONG GAME -----
+            if (gameState.isReady() || gameState.isRunning()) {
+                Paddle currentPaddle = gameManager.getPaddle();
+                if (currentPaddle != null) {
+                    if (keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_RIGHT) {
+                        currentPaddle.keyPressed(e);
                     }
+                }
+
+                if (keyCode == KeyEvent.VK_UP && gameState.isReady()) {
+                    Ball currentBall = gameManager.getBall();
+                    if (currentBall != null) {
+                        currentBall.launch();
+                        gameState.setStatus(GameStatus.RUNNING);
+                    }
+                }
+            }
+
+            // ----- TẠM DỪNG / TIẾP TỤC -----
+            if (keyCode == KeyEvent.VK_SPACE || keyCode == KeyEvent.VK_P) {
+                if (gameState.isRunning()) {
+                    gameState.setStatus(GameStatus.PAUSED);
+                } else if (gameState.isPaused()) {
+                    gameState.setStatus(GameStatus.RUNNING);
                 }
             }
         }
@@ -178,12 +163,15 @@ public class GamePanel extends JPanel implements ActionListener {
         public void keyReleased(KeyEvent e) {
 
             if (gameState.isRunning() || gameState.isReady()) {
-                paddle.keyReleased(e);
+                Paddle paddle = gameManager.getPaddle();
+                if (paddle != null) {
+                    paddle.keyReleased(e);
+                }
             }
         }
 
         @Override
-        public void keyTyped(KeyEvent e) {
-        }
+
+        public void keyTyped(KeyEvent e) { }
     }
 }

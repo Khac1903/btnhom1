@@ -12,7 +12,6 @@ public class Ball extends MoveObject {
         this.image = image;
     }
 
-
     public Ball(int x, int y, int size, int dx, int dy, Color color) {
         super(x, color, dy, dx, size, size, y);
         try {
@@ -24,11 +23,13 @@ public class Ball extends MoveObject {
         }
     }
 
-    public double getDx(){
+
+
+    public double getDx() {
         return dx;
     }
 
-    public double getDy(){
+    public double getDy() {
         return dy;
     }
 
@@ -50,8 +51,8 @@ public class Ball extends MoveObject {
         Rectangle ballRect = this.getBound();
         Rectangle paddleRect = paddle.getBound();
         if (ballRect.intersects(paddleRect) && dy > 0) {
-            SoundManager.playSound("src/sounds/ball_hit_paddle.wav");
 
+			SoundManager.playSound("src/sounds/ball_hit_paddle.wav");
 
             double paddleCenter = paddle.x + paddle.width / 2.0;
             double ballCenter = x + width / 2.0;
@@ -64,8 +65,8 @@ public class Ball extends MoveObject {
             double newDx = speed * Math.sin(angle) + paddleInfluence;
             double newDy = -Math.abs(speed * Math.cos(angle));
 
-            dx = (int)Math.round(newDx);
-            dy = (int)Math.round(newDy);
+            dx = (int) Math.round(newDx);
+            dy = (int) Math.round(newDy);
 
             y = paddle.y - height;
 
@@ -98,7 +99,8 @@ public class Ball extends MoveObject {
         this.dx = 2;
         this.dy = -3;
     }
-    public void changeSpeed(double multiplier){
+
+    public void changeSpeed(double multiplier) {
         dy *= multiplier;
         dx *= multiplier;
     }
