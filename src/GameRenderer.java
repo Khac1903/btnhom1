@@ -65,12 +65,9 @@ public class GameRenderer {
 
     private void drawMenuScreen(Graphics g, int width, int height, GameManager manager) {
         g.setColor(Color.BLACK);
-        g.fillRect(0,0, width, height);
-<<<<<<< HEAD
+		g.fillRect(0,0, width, height);
 
-        // Vẽ tiêu đề gần chính giữa main menu
-=======
->>>>>>> 84b6e8bb8aa00db7e58033b658bf4532aea774f7
+		// Vẽ tiêu đề gần chính giữa main menu
         g.setColor(Color.WHITE);
         g.setFont(new Font("Consolas", Font.BOLD, 48));
         String title = "ARKANOID";

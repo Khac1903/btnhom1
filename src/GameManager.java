@@ -1,8 +1,6 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
 public class GameManager implements ActionListener {
@@ -18,8 +16,7 @@ public class GameManager implements ActionListener {
     private int selectedMenuIndex = 0;
     private int pauseMenuIndex = 0;
     private int gameOverMenuIndex = 0;
-    private  ArrayList<PowerUp> powerUps;
-
+    private ArrayList<PowerUp> powerUps;
 
     public GameManager(GameState sharedState) {
         this.gameState = sharedState;
@@ -28,13 +25,13 @@ public class GameManager implements ActionListener {
         scoreManager = new ScoreManager();
         levelManager = new LevelManager();
         playerManager = new PlayerManager();
-<<<<<<< HEAD
         highScoreManager = new HighScoreManager();
-        
+        powerUps = new ArrayList<>();
+
         // Yêu cầu tên người chơi khi vào menu lần đầu
         askPlayerName();
     }
-    
+
     private void askPlayerName() {
         String name = JOptionPane.showInputDialog(
                 null,
@@ -47,13 +44,10 @@ public class GameManager implements ActionListener {
         } else {
             playerName = "Player";
         }
+
         // Cập nhật high score cho người chơi
         playerManager.setPlayerInfo(playerName, highScoreManager.getHighScore(playerName));
-=======
-        powerUps = new ArrayList<>();
->>>>>>> 84b6e8bb8aa00db7e58033b658bf4532aea774f7
     }
-
 
     private void resetGameObjects() {
         ball = new Ball(390, 450, 20, 20, 4, Color.RED);
@@ -75,7 +69,7 @@ public class GameManager implements ActionListener {
 
     public void update(int width, int height) {
         if (gameState.isReady() || gameState.isRunning()) {
-            if(gameState.isPaused()) return;
+            if (gameState.isPaused()) return;
             paddle.move(width, height);
 
             if (gameState.isReady()) {
@@ -83,7 +77,6 @@ public class GameManager implements ActionListener {
             } else if (gameState.isRunning()) {
                 ball.updatePosition();
                 CollisionManager.getInstance().checkCollision(ball, paddle, brickMap, width, powerUps);
-
 
                 if (ball.isOutOfBounds(height)) {
                     playerManager.loseLife();
@@ -125,12 +118,9 @@ public class GameManager implements ActionListener {
     public ScoreManager getScoreManager() { return scoreManager; }
     public LevelManager getLevelManager() { return levelManager; }
     public PlayerManager getPlayerManager() { return playerManager; }
-<<<<<<< HEAD
     public HighScoreManager getHighScoreManager() { return highScoreManager; }
     public String getPlayerName() { return playerName; }
-=======
 
->>>>>>> 84b6e8bb8aa00db7e58033b658bf4532aea774f7
     public int getSelectedMenuIndex() {
         return selectedMenuIndex;
     }
@@ -161,7 +151,6 @@ public class GameManager implements ActionListener {
                         JOptionPane.INFORMATION_MESSAGE);
                 break;
             case 3: // Exit
-                // Cập nhật highest score trước khi thoát
                 highScoreManager.updateScore(playerName, scoreManager.getScore());
                 System.exit(0);
                 break;
@@ -199,15 +188,13 @@ public class GameManager implements ActionListener {
 
     public void selectPauseMenuOption() {
         switch (pauseMenuIndex) {
-            case 0: // Restart
+            case 0:
                 reset();
                 break;
-
-            case 1: // Resume
+            case 1:
                 gameState.setStatus(GameStatus.RUNNING);
                 break;
-
-            case 2: // Exit to Main Menu
+            case 2:
                 reset();
                 gameState.setStatus(GameStatus.MENU);
                 break;
@@ -230,24 +217,19 @@ public class GameManager implements ActionListener {
 
     public void selectGameOverOption() {
         switch (gameOverMenuIndex) {
-
-            case 0: // Return to Main Menu
-                // Lưu điểm trước khi về menu
+            case 0:
                 highScoreManager.updateScore(playerName, scoreManager.getScore());
                 reset();
                 gameState.setStatus(GameStatus.MENU);
                 break;
-
-            case 1: // Exit Game
-                // Cập nhật highest score trước khi thoát
+            case 1:
                 highScoreManager.updateScore(playerName, scoreManager.getScore());
                 System.exit(0);
                 break;
         }
     }
 
-
     @Override
-    public void actionPerformed(java.awt.event.ActionEvent e) {
+    public void actionPerformed(ActionEvent e) {
     }
 }

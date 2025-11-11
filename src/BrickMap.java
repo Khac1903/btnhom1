@@ -3,11 +3,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class BrickMap {
-    public Bricks[][] map; // mảng 2 chiều chứa các viên gạch
-    public int totalBricks; // số viên gạch cần phá để qua màn
+    public Bricks[][] map;
+    public int totalBricks;
     public Random rand;
-
-
 
     public BrickMap(int level) {
         rand = new Random();
@@ -24,9 +22,9 @@ public class BrickMap {
         int durable_chance = 10 + (level * 4);
         int indestructible_chance = 5 + (level * 2);
         int explore_chance = 5;
+
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
-
                 int brickX = j * brickWidth + 50;
                 int brickY = i * brickHeight + 50;
 
@@ -39,30 +37,33 @@ public class BrickMap {
                         type = BrickType.DURABLE;
                     }
                 } else if (level == 3) {
-                    if (i == 0 || i == rows - 1 || j == 0 || j == cols - 1) type = BrickType.DURABLE;
-                    else if ((i == 2 && j == 2) || (i == 2 && j == cols - 3)) type = BrickType.EXPLORE;
-                    else if (i == 2 || j == 4) type = BrickType.INDESTRUCTIBLE;
-                } else{
-                int roll = rand.nextInt(100);
-                if (roll < durable_chance) {
-                    type = BrickType.DURABLE;
-                } else if (roll < durable_chance + explore_chance) {
-                    type = BrickType.EXPLORE;
-                } else if (level > 1 && (i % 2 == 0) && (j % 3 == 0) && roll < durable_chance + explore_chance + indestructible_chance) {
-                    type = BrickType.INDESTRUCTIBLE;
+                    if (i == 0 || i == rows - 1 || j == 0 || j == cols - 1)
+                        type = BrickType.DURABLE;
+                    else if ((i == 2 && j == 2) || (i == 2 && j == cols - 3))
+                        type = BrickType.EXPLORE;
+                    else if (i == 2 || j == 4)
+                        type = BrickType.INDESTRUCTIBLE;
                 } else {
-                    type = BrickType.NORMAL;
+                    int roll = rand.nextInt(100);
+                    if (roll < durable_chance) {
+                        type = BrickType.DURABLE;
+                    } else if (roll < durable_chance + explore_chance) {
+                        type = BrickType.EXPLORE;
+                    } else if (level > 1 && (i % 2 == 0) && (j % 3 == 0)
+                            && roll < durable_chance + explore_chance + indestructible_chance) {
+                        type = BrickType.INDESTRUCTIBLE;
+                    } else {
+                        type = BrickType.NORMAL;
+                    }
                 }
-            }
-            if (type == BrickType.EXPLORE && i == map.length - 1) {
-                type = BrickType.NORMAL;
-            }
-            if (type == BrickType.INDESTRUCTIBLE && i == map.length - 1) {
-                type = BrickType.NORMAL;
-            }
 
-                map[i][j] = new Bricks(brickX,brickY,brickWidth,brickHeight,type);
-                if(map[i][j].getType() != BrickType.INDESTRUCTIBLE){
+                if (type == BrickType.EXPLORE && i == map.length - 1)
+                    type = BrickType.NORMAL;
+                if (type == BrickType.INDESTRUCTIBLE && i == map.length - 1)
+                    type = BrickType.NORMAL;
+
+                map[i][j] = new Bricks(brickX, brickY, brickWidth, brickHeight, type);
+                if (map[i][j].getType() != BrickType.INDESTRUCTIBLE) {
                     totalBricks++;
                 }
             }
@@ -70,19 +71,19 @@ public class BrickMap {
     }
 
     public void draw(Graphics g) {
-        for(Bricks[] row : map){
-            for(Bricks bricks : row){
-                bricks.draw(g);
+        for (Bricks[] row : map) {
+            for (Bricks brick : row) {
+                brick.draw(g);
             }
         }
     }
-<<<<<<< HEAD
-    
+
+    // 🧱 Xử lý va chạm bóng và gạch
     public int handleBallCollision(Ball ball) {
         return handleBallCollision(ball, new ArrayList<PowerUp>());
     }
-    
-    public int handleBallCollision(Ball ball, ArrayList<PowerUp> powerUps){
+
+    public int handleBallCollision(Ball ball, ArrayList<PowerUp> powerUps) {
         int brokenBricks = 0;
         Rectangle ballRect = ball.getBound();
 
@@ -94,7 +95,6 @@ public class BrickMap {
                 Rectangle brickRect = brick.getBounds();
                 if (!ballRect.intersects(brickRect)) continue;
 
-                // Tính độ chồng lấn theo 4 phía
                 int overlapLeft = (ballRect.x + ballRect.width) - brickRect.x;
                 int overlapRight = (brickRect.x + brickRect.width) - ballRect.x;
                 int overlapTop = (ballRect.y + ballRect.height) - brickRect.y;
@@ -102,12 +102,10 @@ public class BrickMap {
 
                 int minOverlap = Math.min(Math.min(overlapLeft, overlapRight), Math.min(overlapTop, overlapBottom));
 
-				// Phản xạ theo hướng có độ chồng lấn nhỏ nhất
-                if (minOverlap == overlapLeft || minOverlap == overlapRight) {
+                if (minOverlap == overlapLeft || minOverlap == overlapRight)
                     ball.reverseX();
-                } else {
+                else
                     ball.reverseY();
-                }
 
                 if (brick.getType() == BrickType.EXPLORE) {
                     brick.setVisible(false);
@@ -115,27 +113,25 @@ public class BrickMap {
                     totalBricks--;
                     brokenBricks += explore(i, j, powerUps);
                     spawnPowerUp(brick.x, brick.y, powerUps);
-					SoundManager.playSound("src/sounds/explore.wav");
+                    SoundManager.playSound("src/sounds/explore.wav");
                 } else if (brick.getType() != BrickType.INDESTRUCTIBLE) {
-					if (brick.hit()) {
+                    if (brick.hit()) {
                         brokenBricks++;
                         totalBricks--;
                         spawnPowerUp(brick.x, brick.y, powerUps);
-						SoundManager.playSound("src/sounds/ball_hit_brick.wav");
+                        SoundManager.playSound("src/sounds/ball_hit_brick.wav");
                     }
-				} else {
-					// gạch không phá hủy: phát âm thanh riêng
-					SoundManager.playSound("src/sounds/indestructible.wav");
+                } else {
+                    SoundManager.playSound("src/sounds/indestructible.wav");
                 }
 
-                // Cập nhật lại bounding box của bóng sau khi phản xạ để tránh đếm nhiều lần
                 ballRect = ball.getBound();
             }
         }
         return brokenBricks;
     }
 
-    private int explore(int row, int col, ArrayList<PowerUp> powerUps){
+    private int explore(int row, int col, ArrayList<PowerUp> powerUps) {
         int extraBroken = 0;
         for (int i = row - 1; i <= row + 1; i++) {
             for (int j = col - 1; j <= col + 1; j++) {
@@ -151,14 +147,13 @@ public class BrickMap {
         }
         return extraBroken;
     }
-    private void spawnPowerUp(int x, int y, ArrayList<PowerUp> powerUps){
-        if(rand.nextInt(4) == 0){
+
+    private void spawnPowerUp(int x, int y, ArrayList<PowerUp> powerUps) {
+        if (rand.nextInt(4) == 0) {
             PowerUpType randomType = PowerUpType.values()[rand.nextInt(PowerUpType.values().length)];
             powerUps.add(new PowerUp(x, y, randomType));
         }
     }
-=======
->>>>>>> 84b6e8bb8aa00db7e58033b658bf4532aea774f7
 
     public void breakBrick() {
         totalBricks--;
