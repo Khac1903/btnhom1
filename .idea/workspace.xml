@@ -4,6 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+
     <list default="true" id="5bec9d55-9017-45d9-b9cf-981164d850f9" name="Changes" comment="Merge branch 'main' of https://github.com/Khac1903/btnhom1&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml&#10;#&#9;images/ball.png&#10;#&#9;images/paddle.png&#10;#&#9;src/Ball.java&#10;#&#9;src/BrickMap.java&#10;#&#9;src/BrickType.java&#10;#&#9;src/GameManager.java&#10;#&#9;src/GamePanel.java&#10;#&#9;src/GameRenderer.java&#10;#&#9;src/Info.java&#10;#&#9;src/Paddle.java">
       <change afterPath="$PROJECT_DIR$/src/SoundThread.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
@@ -25,6 +26,7 @@
       <change beforePath="$PROJECT_DIR$/src/Paddle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Paddle.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/SoundManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/SoundManager.java" afterDir="false" />
     </list>
+    <list default="true" id="5bec9d55-9017-45d9-b9cf-981164d850f9" name="Changes" comment="Khac commit" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -65,6 +67,7 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Application.Arkanoid.executor&quot;: &quot;Run&quot;,
@@ -77,6 +80,21 @@
     &quot;last_opened_file_path&quot;: &quot;C:/Users/PC/IdeaProjects/10&quot;,
     &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/PC/IdeaProjects/10/src/Main.java&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;vcs.log&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Arkanoid.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/Btnhom1",
+    "onboarding.tips.debug.path": "C:/Users/PC/IdeaProjects/10/src/Main.java",
+    "settings.editor.selected.configurable": "vcs.log",
+    "to.speed.mode.migration.done": "true"
   }
 }</component>
   <component name="TaskManager">
