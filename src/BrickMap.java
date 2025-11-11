@@ -73,49 +73,59 @@ public class BrickMap {
             }
         }
     }
+    
+    public int handleBallCollision(Ball ball) {
+        return handleBallCollision(ball, new ArrayList<PowerUp>());
+    }
+    
     public int handleBallCollision(Ball ball, ArrayList<PowerUp> powerUps){
         int brokenBricks = 0;
-        for(int i=0;i<map.length;i++){
-            for(int j=0;j<map[i].length;j++){
+        Rectangle ballRect = ball.getBound();
+
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
                 Bricks brick = map[i][j];
-                if (brick.isVisible() && ball.getBound().intersects(brick.getBounds())) {
-                    Rectangle ballRect = ball.getBound();
-                    Rectangle brickRect = brick.getBounds();
-                    boolean hitFromLeft   = ballRect.x + ballRect.width - ball.dx <= brickRect.x;
-                    boolean hitFromRight  = ballRect.x - ball.dx >= brickRect.x + brickRect.width;
-                    boolean hitFromTop    = ballRect.y + ballRect.height - ball.dy <= brickRect.y;
-                    boolean hitFromBottom = ballRect.y - ball.dy >= brickRect.y + brickRect.height;
+                if (!brick.isVisible()) continue;
 
-                    if (hitFromLeft || hitFromRight) {
-                        ball.reverseX();
-                    } else if (hitFromTop || hitFromBottom) {
-                        ball.reverseY();
-                    } else {
-                        ball.reverseY();
-                    }
-                    if (brick.getType() == BrickType.EXPLORE) {
+                Rectangle brickRect = brick.getBounds();
+                if (!ballRect.intersects(brickRect)) continue;
 
-                        brick.setVisible(false);
-                        brokenBricks++;
-                        totalBricks--;
-                        brokenBricks += explore(i, j, powerUps);
-                        spawnPowerUp(brick.x, brick.y, powerUps);
-                        //SoundManager.playSound("src/sounds/explore.wav");
-                    } else if (brick.getType() == BrickType.INDESTRUCTIBLE) {
-                        //SoundManager.playSound("src/sounds/indestructible.wav");
-                    } else {
-                        //SoundManager.playSound("src/sounds/ball_hit_brick.wav");
-                    }
-                        if (brick.hit()) {
+                // Tính độ chồng lấn theo 4 phía
+                int overlapLeft = (ballRect.x + ballRect.width) - brickRect.x;
+                int overlapRight = (brickRect.x + brickRect.width) - ballRect.x;
+                int overlapTop = (ballRect.y + ballRect.height) - brickRect.y;
+                int overlapBottom = (brickRect.y + brickRect.height) - ballRect.y;
 
-                            brokenBricks++;
-                            totalBricks--;
-                            spawnPowerUp(brick.x, brick.y, powerUps);
-                        }
-                    }
-                    return brokenBricks;
+                int minOverlap = Math.min(Math.min(overlapLeft, overlapRight), Math.min(overlapTop, overlapBottom));
+
+				// Phản xạ theo hướng có độ chồng lấn nhỏ nhất
+                if (minOverlap == overlapLeft || minOverlap == overlapRight) {
+                    ball.reverseX();
+                } else {
+                    ball.reverseY();
                 }
 
+                if (brick.getType() == BrickType.EXPLORE) {
+                    brick.setVisible(false);
+                    brokenBricks++;
+                    totalBricks--;
+                    brokenBricks += explore(i, j, powerUps);
+                    spawnPowerUp(brick.x, brick.y, powerUps);
+					SoundManager.playSound("src/sounds/explore.wav");
+                } else if (brick.getType() != BrickType.INDESTRUCTIBLE) {
+					if (brick.hit()) {
+                        brokenBricks++;
+                        totalBricks--;
+                        spawnPowerUp(brick.x, brick.y, powerUps);
+						SoundManager.playSound("src/sounds/ball_hit_brick.wav");
+                    }
+				} else {
+					// gạch không phá hủy: phát âm thanh riêng
+					SoundManager.playSound("src/sounds/indestructible.wav");
+                }
+
+                // Cập nhật lại bounding box của bóng sau khi phản xạ để tránh đếm nhiều lần
+                ballRect = ball.getBound();
             }
         }
         return brokenBricks;

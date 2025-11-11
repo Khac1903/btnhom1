@@ -24,9 +24,37 @@ public class GameRenderer {
                 break;
         }
 
-        manager.getScoreManager().draw(g);
-        manager.getLevelManager().draw(g);
-        manager.getPlayerManager().draw(g);
+        // Hiển thị Highest Score và tên người chơi CHỈ trong các menu (MENU, PAUSED, GAME_OVER)
+        if (state.isMenu() || state.isPaused() || state.isGameOver()) {
+            g.setFont(new Font("Arial", Font.BOLD, 18));
+
+            // Highest score (trên cùng)
+            g.setColor(Color.YELLOW);
+            int highest = manager.getHighScoreManager().getHighestScore();
+            g.drawString("Highest Score: " + highest, 10, 22);
+
+            // Player name (ngay dưới Highest Score)
+            g.setColor(Color.CYAN);
+            g.drawString("Player: " + manager.getPlayerName(), 10, 44);
+        }
+
+        // Chỉ hiển thị Score, Level, Lives trong quá trình chơi (READY, RUNNING)
+        if (state.isReady() || state.isRunning()) {
+            g.setFont(new Font("Arial", Font.BOLD, 18));
+            g.setColor(Color.GREEN);
+            String levelText = "Level: " + manager.getLevelManager().getLevel();
+            g.drawString(levelText, 10, 22);
+
+            g.setColor(Color.CYAN);
+            String scoreText = "Score: " + manager.getScoreManager().getScore();
+            int scoreX = (width - g.getFontMetrics().stringWidth(scoreText)) / 2;
+            g.drawString(scoreText, scoreX, 22);
+
+            g.setColor(Color.BLUE);
+            String livesText = "Lives: " + manager.getPlayerManager().getLives();
+            int livesX = width - g.getFontMetrics().stringWidth(livesText) - 30;
+            g.drawString(livesText, livesX, 22);
+        }
     }
 
     private void drawGame(Graphics g, GameManager manager) {
@@ -39,27 +67,36 @@ public class GameRenderer {
         g.setColor(Color.BLACK);
         g.fillRect(0,0, width, height);
 
+        // Vẽ tiêu đề gần chính giữa main menu
         g.setColor(Color.WHITE);
         g.setFont(new Font("Consolas", Font.BOLD, 48));
-        String title = "AKANOID";
-        g.drawString(title, (width - g.getFontMetrics().stringWidth(title))/2, height/4);
-
-        g.setFont(new Font("Arial", Font.BOLD, 28));
-        String[] options = {"Start Game", "How to Game", "Exit"};
+        String title = "ARKANOID";
+        g.drawString(title, (width - g.getFontMetrics().stringWidth(title))/2, height / 4);
+        
+        // Vẽ menu options ở trung tâm
+        String[] options = {"Start Game", "Top 5 Players", "How to Game", "Exit"};
         int selected = manager.getSelectedMenuIndex();
-        for(int i=0; i<options.length; i++) {
-            if(i == selected) {
+
+        int menuStartY = height / 2 - options.length * 20;
+        g.setFont(new Font("Arial", Font.BOLD, 28));
+        for (int i = 0; i < options.length; i++) {
+            if (i == selected) {
                 g.setColor(Color.YELLOW);
             } else {
                 g.setColor(Color.LIGHT_GRAY);
             }
-            g.drawString(options[i], (width - g.getFontMetrics().stringWidth(options[i]))/2, height/2 + i*50 );
+            String option = options[i];
+            g.drawString(option,
+                    (width - g.getFontMetrics().stringWidth(option)) / 2,
+                    menuStartY + i * 50);
         }
+
+        // Vẽ hướng dẫn
         g.setColor(Color.GRAY);
-        g.setFont(new Font("Arial", Font.PLAIN, 18));
+        g.setFont(new Font("Arial", Font.PLAIN, 16));
         g.drawString("Use ↑/↓ to move, ENTER to select, SPACE to paused",
                 (width - g.getFontMetrics().stringWidth("Use ↑/↓ to move, ENTER to select, SPACE to paused")) / 2,
-                height - 40);
+                height - 30);
     }
 
     private void drawPauseMenu(Graphics g, int width, int height, GameManager manager) {
@@ -71,7 +108,7 @@ public class GameRenderer {
         String title = "PAUSED";
         g.drawString(title, (width - g.getFontMetrics().stringWidth(title)) / 2, height / 3);
 
-        String[] options = {"Resume", "Restart", "Exit to Menu"};
+        String[] options = {"Restart", "Resume", "Exit to Menu"};
         int selected = manager.getPauseMenuIndex();
 
         g.setFont(new Font("Arial", Font.BOLD, 28));

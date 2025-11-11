@@ -2,7 +2,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Properties;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class HighScoreManager {
     private Properties properties;
@@ -43,5 +44,42 @@ public class HighScoreManager {
             properties.setProperty(playerName, String.valueOf(newScore));
             saveScores();
         }
+    }
+
+    public static class ScoreEntry {
+        public String name;
+        public int score;
+
+        public ScoreEntry(String name, int score) {
+            this.name = name;
+            this.score = score;
+        }
+    }
+
+    public List<ScoreEntry> getTopScores(int topN) {
+        List<ScoreEntry> scores = new ArrayList<>();
+        
+        for (String key : properties.stringPropertyNames()) {
+            try {
+                int score = Integer.parseInt(properties.getProperty(key));
+                scores.add(new ScoreEntry(key, score));
+            } catch (NumberFormatException e) {
+                // Bỏ qua các giá trị không hợp lệ
+            }
+        }
+        
+        // Sắp xếp theo điểm giảm dần
+        scores.sort((a, b) -> Integer.compare(b.score, a.score));
+        
+        // Trả về top N
+        return scores.stream().limit(topN).collect(Collectors.toList());
+    }
+
+    public int getHighestScore() {
+        List<ScoreEntry> topScores = getTopScores(1);
+        if (topScores.isEmpty()) {
+            return 0;
+        }
+        return topScores.get(0).score;
     }
 }
