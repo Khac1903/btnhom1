@@ -9,6 +9,11 @@ import javax.imageio.ImageIO;
 public class Paddle extends MoveObject {
     private BufferedImage paddleImage;
 
+    private final int ORIGINAL_WIDTH = 100;
+    private final int MAX_WIDTH = 150;
+    private final int MIN_WIDTH = 50;
+
+
     // Constructor tự load ảnh
     public Paddle(int x, int y, int width, int height, Color color) {
         super(x, color, 0, 0, height, width, y);
@@ -35,6 +40,20 @@ public class Paddle extends MoveObject {
         x += dx;
         if (x <= 0) x = 0;
         if (x >= panelWidth - width) x = panelWidth - width;
+    }
+
+    public void expand(){
+        int oldX = x;
+        width = Math.min(width + 25, MAX_WIDTH);
+        x = oldX - (25/2);
+    }
+
+    public void shrink(){
+        width = Math.max(width - 25, MIN_WIDTH);
+    }
+
+    public void resetWidth(){
+        width = ORIGINAL_WIDTH;
     }
 
     public void keyPressed(KeyEvent e) {

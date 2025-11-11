@@ -9,7 +9,7 @@ public class Info {
 
 
     public Info() {
-        this.level = 3;
+        this.level = 1;
         this.score = 0;
         this.lives = 3;
 

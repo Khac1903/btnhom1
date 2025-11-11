@@ -36,25 +36,10 @@ public class GamePanel extends JPanel implements ActionListener {
         info = new Info();
         powerUps = new ArrayList<>();
 
-        askPlayerName();
 
 
         timer = new Timer(10, this);
         timer.start();
-    }
-
-    private void askPlayerName() {
-        String name = JOptionPane.showInputDialog(
-                this,
-                "Nhập tên của bạn:",
-                "Chào mừng!",
-                JOptionPane.PLAIN_MESSAGE
-        );
-        if (name == null || name.trim().isEmpty()) {
-            name = "Player";
-        }
-        int currentHighScore = highScoreManager.getHighScore(name);
-        info.setPlayerInfo(name, currentHighScore);
     }
 
     public void startGame() {
@@ -141,9 +126,11 @@ public class GamePanel extends JPanel implements ActionListener {
                 }
 
                 if (keyCode == KeyEvent.VK_UP && gameState.isReady()) {
-                    Ball currentBall = gameManager.getBall();
-                    if (currentBall != null) {
-                        currentBall.launch();
+                    ArrayList<Ball> ballsToLaunch = gameManager.getBalls();
+                    if (!ballsToLaunch.isEmpty()) {
+                        for(Ball b : ballsToLaunch) {
+                            b.launch();
+                        }
                         gameState.setStatus(GameStatus.RUNNING);
                     }
                 }
