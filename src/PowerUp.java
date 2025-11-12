@@ -18,7 +18,6 @@ public class PowerUp {
         this.dy = 2;
         this.type = type;
         this.isVisible = true;
-
         switch (type) {
             case PADDLE_WIDE, PADDLE_NARROW:
                 this.width = 35;
@@ -46,7 +45,6 @@ public class PowerUp {
                 fileName = "fastBall.png";
                 break;
         }
-
         try {
             this.image = ImageIO.read(new File(imagePath + fileName));
         } catch (IOException e) {
@@ -55,10 +53,9 @@ public class PowerUp {
         }
     }
 
-    public void move() {
+    public void move(){
         y += dy;
     }
-
     public void draw(Graphics g) {
         if (isVisible) {
             if (image != null) {
@@ -125,14 +122,12 @@ public class PowerUp {
         isVisible = visible;
     }
 
-    public Rectangle getBounds() {
+    public Rectangle getBounds(){
         return new Rectangle(x, y, width, height);
     }
-
-    public PowerUpType getType() {
+    public PowerUpType getType(){
         return type;
     }
-
     public boolean isOffScreen(int panelHeight) {
         return y > panelHeight;
     }

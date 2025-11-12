@@ -11,7 +11,6 @@ public class Arkanoid extends JFrame {
 
     }
     public static void main(String[] args) {
-
         new Arkanoid();
     }
 }

@@ -103,7 +103,6 @@ public final class GameConstants {
     public static final String SOUND_POWERUP = "src/sounds/powerup.wav";
     
     // ========== IMAGE FILE PATHS ==========
-
     public static final String IMAGE_BALL = "images/ball.png";
     public static final String IMAGE_PADDLE = "images/paddle.png";
 }
