@@ -7,10 +7,7 @@
     <list default="true" id="5bec9d55-9017-45d9-b9cf-981164d850f9" name="Changes" comment="Khac commit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/highScores.properties" beforeDir="false" afterPath="$PROJECT_DIR$/highScores.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/fastBall.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/fastBall.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/multiBall.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/multiBall.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/paddleExpand.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/paddleExpand.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/images/paddleShrink.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/paddleShrink.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/images/sf.png" beforeDir="false" afterPath="$PROJECT_DIR$/images/sf.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GameRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GameRenderer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -53,23 +50,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Arkanoid.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "temp-fix",
-    "ignore.virus.scanning.warn.message": "true",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Btnhom1",
-    "onboarding.tips.debug.path": "C:/Users/PC/IdeaProjects/10/src/Main.java",
-    "settings.editor.selected.configurable": "vcs.log",
-    "to.speed.mode.migration.done": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Arkanoid.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;temp-fix&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Btnhom1&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/PC/IdeaProjects/10/src/Main.java&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.log&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="Arkanoid" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Arkanoid" />
@@ -138,7 +135,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Paddle.java</url>
-          <line>65</line>
+          <line>36</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>

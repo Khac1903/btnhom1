@@ -9,6 +9,7 @@ public class GameRenderer {
     private static final Font GAME_OVER_FONT = new Font("Ink Free", Font.BOLD, 75);
     private BufferedImage backgroundImage;
     private BufferedImage menuImage;
+    private BufferedImage titleImage;
     public GameRenderer(){
         try {
             backgroundImage = ImageIO.read(new File("images/back_ground_game.jpg"));
@@ -24,6 +25,14 @@ public class GameRenderer {
             System.err.println("Khong the in anh background");
             e.printStackTrace();
             menuImage = null;
+        }
+        try {
+            titleImage = ImageIO.read(new File("images/sf.png"));
+        }
+        catch (IOException e) {
+            System.err.println("Khong the in anh");
+            e.printStackTrace();
+            titleImage = null;
         }
     }
     public void render(Graphics g, GameManager manager, int width, int height) {
@@ -106,10 +115,15 @@ public class GameRenderer {
             }
 
         // Vẽ tiêu đề gần chính giữa main menu
-        g.setColor(Color.WHITE);
-        g.setFont(new Font("Consolas", Font.BOLD, 48));
-        String title = "ARKANOID";
-        g.drawString(title, (width - g.getFontMetrics().stringWidth(title))/2, height / 4);
+        if (titleImage != null) {
+            g.drawImage(titleImage, 210 , 20, 400, 200, null);
+        } else {
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Consolas", Font.BOLD, 48));
+            String title = "ARKANOID";
+            g.drawString(title, (width - g.getFontMetrics().stringWidth(title))/2, height / 4);
+        }
+
 
         // Vẽ menu options ở trung tâm
         String[] options = {"Start Game", "Top 5 Players", "How to Game", "Exit"};
