@@ -8,6 +8,7 @@ public class GameRenderer {
     private static final Font MENU_FONT = new Font("Arial", Font.BOLD, 30);
     private static final Font GAME_OVER_FONT = new Font("Ink Free", Font.BOLD, 75);
     private BufferedImage backgroundImage;
+    private BufferedImage menuImage;
     public GameRenderer(){
         try {
             backgroundImage = ImageIO.read(new File("images/back_ground_game.jpg"));
@@ -15,6 +16,14 @@ public class GameRenderer {
             System.err.println("Khong the in anh background");
             e.printStackTrace();
             backgroundImage = null;
+        }
+        try {
+            menuImage = ImageIO.read(new File("images/background.jpg"));
+        }
+        catch (IOException e) {
+            System.err.println("Khong the in anh background");
+            e.printStackTrace();
+            menuImage = null;
         }
     }
     public void render(Graphics g, GameManager manager, int width, int height) {
@@ -70,7 +79,7 @@ public class GameRenderer {
             int scoreX = (width - g.getFontMetrics().stringWidth(scoreText)) / 2;
             g.drawString(scoreText, scoreX, 22);
 
-            g.setColor(Color.BLUE);
+            g.setColor(Color.PINK);
             String livesText = "Lives: " + manager.getPlayerManager().getLives();
             int livesX = width - g.getFontMetrics().stringWidth(livesText) - 30;
             g.drawString(livesText, livesX, 22);
@@ -89,8 +98,12 @@ public class GameRenderer {
     }
 
     private void drawMenuScreen(Graphics g, int width, int height, GameManager manager) {
-        g.setColor(Color.BLACK);
-        g.fillRect(0,0, width, height);
+            if (menuImage != null) {
+                g.drawImage(menuImage, 0, 0, width, height, null);
+            } else {
+                g.setColor(Color.BLACK);
+                g.fillRect(0, 0, width, height);
+            }
 
         // Vẽ tiêu đề gần chính giữa main menu
         g.setColor(Color.WHITE);
@@ -121,7 +134,7 @@ public class GameRenderer {
         g.setFont(new Font("Arial", Font.PLAIN, 16));
         g.drawString("Use ↑/↓ to move, ENTER to select, SPACE to paused",
                 (width - g.getFontMetrics().stringWidth("Use ↑/↓ to move, ENTER to select, SPACE to paused")) / 2,
-                height - 30);
+                height - 50);
     }
 
     private void drawGameOverMenu(Graphics g, int width, int height, GameManager manager) {
