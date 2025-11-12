@@ -117,7 +117,7 @@ Không dùng
 ![Leaderboard](docs/screenshots/leaderboard.png)
 
 ### Video Demo
-[![Video Demo](docs/screenshots/video-thumbnail.png)](docs/demo/gameplay.mp4)
+[![Video Demo]([docs/screenshots/video-thumbnail.png)](docs/demo/gameplay.mp4](https://drive.google.com/drive/folders/140f1sMX1hRlhQipItiA5tiE0vpF218b9?hl=vi))
 
 *Full gameplay video is available in `docs/demo/gameplay.mp4`*
 
