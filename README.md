@@ -3,9 +3,9 @@
 ## Author
 Group [5] - Class [INT 2204 5]
 1. [Bùi Thế Khắc] - [24020167]
-2. [Họ tên 2] - [MSSV 2]
-3. [Họ tên 3] - [MSSV 3]
-4. [Họ tên 4] - [MSSV 4]
+2. [Nguyễn Huy Hoàng] - [24020140]
+3. [Hoàng Văn Định] - [24020068]
+4. [Nguyễn Hải Dương] - [24020104]
 
 **Instructor**: [Trương Xuân Hiếu, Kiều Văn Tuyên]  
 **Semester**: [HK1 - Năm học 2025-2026]
@@ -53,14 +53,8 @@ Sử dụng design Patterns Sigleton
 ---
 
 ## Multithreading Implementation
-_Có dùng hay không và dùng như thế nào_
+Không dùng
 
-The game uses multiple threads to ensure smooth performance:
-
-1. **Game Loop Thread**: Updates game logic at 60 FPS
-2. **Rendering Thread**: Handles graphics rendering (EDT for JavaFX Application Thread)
-3. **Audio Thread Pool**: Plays sound effects asynchronously
-4. **I/O Thread**: Handles save/load operations without blocking UI
 
 ---
 
@@ -81,7 +75,7 @@ The game uses multiple threads to ensure smooth performance:
 | '↑' | launch ball |
 
 ### How to Play
-1. **Start the game**: Click "New Game" from the main menu.
+1. **Start the game**: Click "Start Game" from the main menu.
 2. **Control the paddle**: Use arrow keys to move left and right.
 3. **Launch the ball**: Press ↑ to launch ball.
 4. **Destroy bricks**: Bounce the ball to hit and destroy bricks.
@@ -92,21 +86,16 @@ The game uses multiple threads to ensure smooth performance:
 ### Power-ups
 | Icon | Name | Effect |
 |------|------|--------|
-| 🟦 | Expand Paddle | Increases paddle width for 10 seconds |
-| 🟥 | Shrink Paddle | Decreases paddle width for 10 seconds |
-| ⚡ | Fast Ball | Increases ball speed by 30% |
-| 🐌 | Slow Ball | Decreases ball speed by 30% |
+| 🟦 | Expand Paddle | Increases paddle width for 1 live |
+| 🟥 | Shrink Paddle | Decreases paddle width for 1 live |
+| ⚡ | Fast Ball | Increases ball speed by 20% |
 | 🎯 | Multi Ball | Spawns 2 additional balls |
-| 🔫 | Laser Gun | Shoot lasers to destroy bricks for 15 seconds |
-| 🧲 | Magnet | Ball sticks to paddle, launch with SPACE |
-| 🛡️ | Shield | Protects from losing one life |
-| 🔥 | Fire Ball | Ball passes through bricks for 12 seconds |
 
 ### Scoring System
-- Normal Brick: 100 points
-- Strong Brick: 300 points
-- Explosive Brick: 500 points + nearby bricks
-- Power-up Collection: 50 points
+- Normal Brick: 10 points
+- Explore Brick: 10 points
+- Durable Brick: 10 points
+- Indestructible Brick: 0 point
 - Combo Multiplier: x2, x3, x4... for consecutive hits
 
 ---
@@ -143,7 +132,6 @@ The game uses multiple threads to ensure smooth performance:
    - Co-op multiplayer mode
 
 2. **Enhanced gameplay**
-   - Boss battles at end of worlds
    - More power-up varieties (freeze time, shield wall, etc.)
    - Achievements system
 
