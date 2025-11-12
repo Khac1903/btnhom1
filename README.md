@@ -95,26 +95,25 @@ Không dùng
 - Normal Brick: 10 points
 - Explore Brick: 10 points
 - Durable Brick: 10 points
-- Indestructible Brick: 0 point
+- Indestructible Brick: Can break!!!
 - Combo Multiplier: x2, x3, x4... for consecutive hits
 
 ---
 
 ## Demo
 
+
 ### Screenshots
 
 **Main Menu**  
-![Main Menu](docs/screenshots/menu.png)
+![Main Menu]([](https://drive.google.com/drive/folders/140f1sMX1hRlhQipItiA5tiE0vpF218b9?hl=vi))
 
 **Gameplay**  
-![Gameplay](docs/screenshots/gameplay.png)
+![Gameplay]([docs/screenshots/gameplay.png](https://drive.google.com/drive/folders/140f1sMX1hRlhQipItiA5tiE0vpF218b9?hl=vi))
 
-**Power-ups in Action**  
-![Power-ups](docs/screenshots/powerups.png)
 
 **Leaderboard**  
-![Leaderboard](docs/screenshots/leaderboard.png)
+![Leaderboard]([docs/screenshots/leaderboard.png](https://drive.google.com/drive/folders/140f1sMX1hRlhQipItiA5tiE0vpF218b9?hl=vi))
 
 ### Video Demo
 [![Video Demo](https://drive.google.com/file/d/1i-zbX_6TzGTEvqNPLVQvi4H5IEhuW5WW/view?usp=sharing)
@@ -148,7 +147,7 @@ Không dùng
 | Technology | Version | Purpose |
 |------------|---------|---------|
 | Java | 17+ | Core language |
-| JavaFX | 19.0.2 | GUI framework |
+| JavaSwing | 19.0.2 | GUI framework |
 | Maven | 3.9+ | Build tool |
 | Jackson | 2.15.0 | JSON processing |
 
