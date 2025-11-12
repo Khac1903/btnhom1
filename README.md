@@ -47,7 +47,7 @@ _Có thể sử dụng IntelliJ để generate ra Class Diagrams: https://www.yo
 Sử dụng design Patterns Sigleton
 
 ### 1. Singleton Pattern
-**Used in:** `CollisionManager`
+**Used in:** `Paddle`
 **Purpose:** Ensure only one instance exists throughout the application.
 
 ---
@@ -117,7 +117,7 @@ Không dùng
 ![Leaderboard](docs/screenshots/leaderboard.png)
 
 ### Video Demo
-[![Video Demo]([docs/screenshots/video-thumbnail.png)](docs/demo/gameplay.mp4](https://drive.google.com/drive/folders/140f1sMX1hRlhQipItiA5tiE0vpF218b9?hl=vi))
+[![Video Demo](https://drive.google.com/drive/folders/140f1sMX1hRlhQipItiA5tiE0vpF218b9?hl=vi)
 
 *Full gameplay video is available in `docs/demo/gameplay.mp4`*
 
